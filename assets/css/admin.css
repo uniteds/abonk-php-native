@@ -1,0 +1,562 @@
+/* 
+ * Abonk CMS - Premium Admin Dashboard Stylesheet
+ * Elegant Duo-Tone Light Theme (Cosmic Latte Cream & Jade Green):
+ * - Base Background: #FFF8E7 (Cosmic Latte)
+ * - Sidebar Structure: #f3ebd5 (Warm Cream darker shade)
+ * - Accent: #00A86B (Jade Green)
+ * - Contrast Dark Text: #051f14 (Organic Deep Forest Green)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --color-bg: #FFF8E7;
+    --color-sidebar: #f3ebd5;
+    --color-card: #ffffff;
+    --color-card-hover: rgba(255, 255, 255, 0.7);
+    --color-accent: #00A86B;
+    --color-accent-hover: #008a58;
+    --color-cream: #FFF8E7;
+    --color-dark: #051f14;
+    --color-border: rgba(5, 31, 20, 0.08);
+    --color-border-focus: rgba(0, 168, 107, 0.4);
+    
+    --font-primary: 'Plus Jakarta Sans', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg);
+    color: var(--color-dark);
+    line-height: 1.5;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---------------------------------------------------- */
+/* ADMIN LAYOUT STRUCTURE                               */
+/* ---------------------------------------------------- */
+.admin-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    width: 100%;
+}
+
+/* ---------------------------------------------------- */
+/* SIDEBAR NAVIGATION                                   */
+/* ---------------------------------------------------- */
+aside {
+    background-color: var(--color-sidebar);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.admin-logo {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-dark);
+    text-decoration: none;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.5px;
+}
+
+.admin-logo span {
+    color: var(--color-accent);
+}
+
+.menu-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(5, 31, 20, 0.4);
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(5, 31, 20, 0.7);
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu a:hover {
+    color: var(--color-accent);
+    background-color: rgba(0, 168, 107, 0.05);
+}
+
+.sidebar-menu li.active a {
+    background-color: var(--color-accent);
+    color: var(--color-cream);
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(0, 168, 107, 0.15);
+}
+
+.user-badge {
+    margin-top: auto;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-badge .username {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--color-dark);
+}
+
+.user-badge .role {
+    font-size: 11px;
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.user-badge .logout-link {
+    color: #ff5555;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: color 0.2s ease;
+}
+
+.user-badge .logout-link:hover {
+    color: #ff3333;
+}
+
+/* ---------------------------------------------------- */
+/* MAIN CONTENT BODY                                    */
+/* ---------------------------------------------------- */
+main {
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 20px;
+}
+
+.admin-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-dark);
+    letter-spacing: -0.5px;
+}
+
+.admin-header p {
+    font-size: 14px;
+    color: rgba(5, 31, 20, 0.5);
+    margin-top: 4px;
+}
+
+/* ---------------------------------------------------- */
+/* NOTIFICATIONS / ALERTS                               */
+/* ---------------------------------------------------- */
+.alert {
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.alert-error {
+    background-color: rgba(255, 75, 75, 0.08);
+    border: 1px solid rgba(255, 75, 75, 0.2);
+    color: #e03b3b;
+}
+
+.alert-success {
+    background-color: rgba(0, 168, 107, 0.08);
+    border: 1px solid rgba(0, 168, 107, 0.2);
+    color: var(--color-accent);
+}
+
+/* ---------------------------------------------------- */
+/* DASHBOARD STATISTICS CARDS                           */
+/* ---------------------------------------------------- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(5, 31, 20, 0.02);
+}
+
+.stat-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(5, 31, 20, 0.04);
+}
+
+.stat-title {
+    font-size: 11px;
+    color: rgba(5, 31, 20, 0.5);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-accent);
+}
+
+/* ---------------------------------------------------- */
+/* TABLES                                               */
+/* ---------------------------------------------------- */
+.table-wrapper {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(5, 31, 20, 0.03);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    background-color: rgba(5, 31, 20, 0.02);
+    border-bottom: 1px solid var(--color-border);
+    padding: 16px 24px;
+    font-weight: 700;
+    color: rgba(5, 31, 20, 0.5);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-dark);
+    font-weight: 500;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: rgba(5, 31, 20, 0.01);
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background-color: rgba(0, 168, 107, 0.1);
+    color: var(--color-accent);
+}
+
+.badge-warning {
+    background-color: rgba(255, 170, 0, 0.1);
+    color: #b87a00;
+}
+
+.badge-info {
+    background-color: rgba(0, 150, 255, 0.1);
+    color: #0077cc;
+}
+
+/* Actions buttons styling */
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+/* ---------------------------------------------------- */
+/* BUTTONS                                              */
+/* ---------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: var(--color-accent);
+    color: var(--color-cream);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-primary);
+}
+
+.btn:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 168, 107, 0.2);
+}
+
+.btn-secondary {
+    background-color: rgba(5, 31, 20, 0.03);
+    color: var(--color-dark);
+    border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(5, 31, 20, 0.06);
+    box-shadow: none;
+}
+
+.btn-danger {
+    background-color: rgba(255, 75, 75, 0.08);
+    color: #d13030;
+    border: 1px solid rgba(255, 75, 75, 0.15);
+}
+
+.btn-danger:hover {
+    background-color: #d13030;
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 75, 75, 0.15);
+}
+
+/* ---------------------------------------------------- */
+/* FORMS AND FIELDS                                     */
+/* ---------------------------------------------------- */
+.form-card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 800px;
+    box-shadow: 0 8px 24px rgba(5, 31, 20, 0.02);
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: rgba(5, 31, 20, 0.6);
+}
+
+.form-control {
+    width: 100%;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--color-dark);
+    font-family: var(--font-primary);
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background-color: var(--color-card);
+    box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.12);
+}
+
+.form-control::placeholder {
+    color: rgba(5, 31, 20, 0.3);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+/* Rich Text Area custom sizing */
+.editor-textarea {
+    min-height: 350px !important;
+    background-color: #fffdec; /* Warm tone editor area */
+}
+
+/* Helper small text under inputs */
+.form-text {
+    font-size: 12px;
+    color: rgba(5, 31, 20, 0.45);
+    margin-top: 6px;
+}
+
+/* ---------------------------------------------------- */
+/* LOGIN SCREEN LAYOUT                                  */
+/* ---------------------------------------------------- */
+.login-body {
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--color-bg);
+}
+
+.login-card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(5, 31, 20, 0.05);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-dark);
+    margin-bottom: 6px;
+}
+
+.login-header p {
+    font-size: 13px;
+    color: rgba(5, 31, 20, 0.45);
+}
+
+/* ---------------------------------------------------- */
+/* RESPONSIVE DESIGN                                    */
+/* ---------------------------------------------------- */
+@media (max-width: 992px) {
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+    
+    aside {
+        display: none;
+    }
+}
+
+/* ---------------------------------------------------- */
+/* CUSTOM CKEDITOR 5 THEME OVERRIDES                    */
+/* ---------------------------------------------------- */
+.ck-editor {
+    margin-top: 5px;
+    box-shadow: 0 4px 12px rgba(5, 31, 20, 0.02);
+}
+
+.ck.ck-editor__main>.ck-editor__editable {
+    background-color: #fffdec !important; /* Premium warm color editor area */
+    color: var(--color-dark) !important;
+    min-height: 320px;
+    border-radius: 0 0 10px 10px !important;
+    border-color: var(--color-border) !important;
+    font-family: var(--font-primary) !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    padding: 20px 24px !important;
+}
+
+.ck.ck-editor__main>.ck-editor__editable:focus {
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.12) !important;
+    outline: none !important;
+}
+
+.ck.ck-toolbar {
+    background-color: var(--color-sidebar) !important;
+    border-color: var(--color-border) !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 6px 12px !important;
+}
+
+.ck.ck-button {
+    color: var(--color-dark) !important;
+    cursor: pointer !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease !important;
+}
+
+.ck.ck-button:hover {
+    background-color: rgba(0, 168, 107, 0.1) !important;
+    color: var(--color-accent) !important;
+}
+
+.ck.ck-button.ck-on {
+    background-color: var(--color-accent) !important;
+    color: var(--color-cream) !important;
+}
+
+.ck.ck-dropdown .ck-button.ck-dropdown__button {
+    background-color: transparent !important;
+}
+
+.ck.ck-dropdown__panel {
+    background-color: var(--color-card) !important;
+    border-color: var(--color-border) !important;
+    box-shadow: 0 10px 25px rgba(5, 31, 20, 0.08) !important;
+}
+

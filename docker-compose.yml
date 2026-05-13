@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # Database Service (MySQL 8.0)
+  db:
+    image: mysql:8.0
+    container_name: abonk_cms_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_DATABASE: php_abonk_cms
+    ports:
+      - "33069:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - cms_network
+
+  # Web Application Service (PHP Apache)
+  web:
+    build: .
+    container_name: abonk_cms_web
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=rootpassword123
+      - DB_NAME=php_abonk_cms
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - cms_network
+
+volumes:
+  db_data:
+
+networks:
+  cms_network:
+    driver: bridge

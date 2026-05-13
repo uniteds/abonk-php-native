@@ -1,0 +1,32 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Docker volume data
+db_data/
+mysql/
+
+# Composer dependencies (if used in future)
+vendor/
+
+# User uploaded media (optional: uncomment if you don't want sample uploads in git)
+# assets/uploads/*
+# !assets/uploads/kotapadang.jpeg
+
+# Log files
+*.log
