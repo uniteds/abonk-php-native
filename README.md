@@ -86,4 +86,4 @@ Setelah instalasi selesai, Anda dapat masuk ke Panel Admin melalui `http://local
 
 Proyek ini bersifat *Open Source* dan dirilis di bawah lisensi **MIT**. Anda bebas untuk memodifikasi, mendistribusikan, dan mengembangkannya untuk keperluan pribadi maupun komersial.
 
-Dibuat dengan ❤️ untuk komunitas pengembang web PHP Indonesia.
+Dibuat dengan ❤️ oleh farouk.id untuk pencinta web PHP.
