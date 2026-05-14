@@ -194,6 +194,14 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                                     <li><a href="<?= strpos($m['url'], 'http') === 0 ? \App\Core\Request::escape($m['url']) : BASE_URL . \App\Core\Request::escape($m['url']) ?>"><?= \App\Core\Request::escape($m['label']) ?></a></li>
                                 <?php endforeach; ?>
                             <?php endif; ?>
+                            <?php 
+                            $mobileTopbarPages = (new \App\Models\Page())->getTopbarPages();
+                            if (!empty($mobileTopbarPages)): 
+                            ?>
+                                <?php foreach ($mobileTopbarPages as $tp): ?>
+                                    <li><a href="<?= BASE_URL ?>/page/<?= \App\Core\Request::escape($tp['slug']) ?>"><?= \App\Core\Request::escape($tp['title']) ?></a></li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </ul>
                     </nav>
                 </div>
