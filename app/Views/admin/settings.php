@@ -72,6 +72,25 @@ require_once __DIR__ . '/../layouts/admin_header.php';
             <p class="form-text">Gambar latar belakang beresolusi tinggi untuk bagian atas halaman beranda. Format JPG/PNG/WEBP maks 2MB.</p>
         </div>
 
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;">Manajemen Sponsor & Iklan Sidebar</h3>
+
+        <div class="form-group">
+            <label for="sponsor_url">URL Tautan Sponsor (Sponsor Link)</label>
+            <input type="url" name="sponsor_url" id="sponsor_url" class="form-control" placeholder="https://css.web.id" value="<?= \App\Core\Request::escape($settings['sponsor_url'] ?? 'https://css.web.id') ?>">
+            <p class="form-text">Tautan tujuan ketika banner iklan sponsor di sidebar diklik oleh pengunjung.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="sponsor_image">Gambar Banner Sponsor / Iklan</label>
+            <?php if (!empty($settings['sponsor_image'])): ?>
+                <div style="margin-bottom: 12px; max-width: 300px; padding: 12px; background: rgba(5,31,20,0.03); border: 1px solid var(--color-border); border-radius: 8px;">
+                    <img src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($settings['sponsor_image']) ?>" alt="Sponsor Banner" style="max-width: 100%; height: auto; border-radius: 6px; display: block;">
+                </div>
+            <?php endif; ?>
+            <input type="file" name="sponsor_image" id="sponsor_image" class="form-control" accept="image/jpeg,image/png,image/webp">
+            <p class="form-text">Gambar banner iklan untuk diletakkan di sidebar. Format JPG/PNG/WEBP maks 2MB.</p>
+        </div>
+
         <div class="form-actions" style="margin-top: 40px;">
             <button type="submit" class="btn">Simpan Semua Pengaturan</button>
             <a href="<?= BASE_URL ?>/admin" class="btn btn-secondary">Batalkan</a>

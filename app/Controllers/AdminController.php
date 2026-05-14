@@ -63,6 +63,7 @@ class AdminController extends Controller {
                     'site_desc'       => Request::post('site_desc'),
                     'site_hero_title' => Request::post('site_hero_title'),
                     'site_hero_desc'  => Request::post('site_hero_desc'),
+                    'sponsor_url'     => Request::post('sponsor_url'),
                 ];
 
                 if (empty($settingsData['site_name']) || empty($settingsData['site_desc'])) {
@@ -87,6 +88,17 @@ class AdminController extends Controller {
                             $settingsData['site_hero_image'] = $heroName;
                         } else {
                             $error = "Gagal mengupload gambar banner. Gunakan format JPG/PNG/WEBP < 2MB.";
+                        }
+                    }
+
+                    // Handle sponsor_image upload
+                    $sponsorFile = Request::file('sponsor_image');
+                    if ($sponsorFile && $sponsorFile['error'] === UPLOAD_ERR_OK) {
+                        $sponsorName = $this->uploadImage($sponsorFile, 'sponsor_');
+                        if ($sponsorName) {
+                            $settingsData['sponsor_image'] = $sponsorName;
+                        } else {
+                            $error = "Gagal mengupload gambar banner sponsor. Gunakan format JPG/PNG/WEBP < 2MB.";
                         }
                     }
 

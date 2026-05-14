@@ -49,7 +49,7 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
     
     <!--Offcanvas sidebar-->
     <aside id="sidebar-wrapper" class="custom-scrollbar offcanvas-sidebar">
-        <button class="off-canvas-close"><i class="elegant-icon icon_close"></i></button>
+        <button class="off-canvas-close" aria-label="Tutup navigasi"><i class="elegant-icon icon_close"></i></button>
         <div class="sidebar-inner">
             <!--Categories-->
             <div class="sidebar-widget widget_categories mb-50 mt-30">
@@ -110,8 +110,8 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                 <div class="widget-header-2 position-relative mb-30">
                     <h5 class="mt-5 mb-30">Sponsor</h5>
                 </div>
-                <a href="<?= BASE_URL ?>" target="_blank">
-                    <img class="advertise-img border-radius-5" src="<?= BASE_URL ?>/assets/imgs/ads/ads-1.jpg" alt="Ads">
+                <a href="<?= !empty($settings['sponsor_url']) ? \App\Core\Request::escape($settings['sponsor_url']) : 'https://css.web.id' ?>" target="_blank" aria-label="Kunjungi tautan sponsor kami">
+                    <img class="advertise-img border-radius-5" src="<?= !empty($settings['sponsor_image']) ? BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($settings['sponsor_image']) : BASE_URL . '/assets/imgs/ads/ads-1.jpg' ?>" alt="Banner Sponsor">
                 </a>
             </div>
         </div>
@@ -136,9 +136,9 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                             <li class="list-inline-item"><a href="<?= BASE_URL ?>/page/tentang-kami"><i class="elegant-icon icon_document_alt mr-5"></i>Tentang Kami</a></li>
                         </ul>
                         <span class="vertical-divider mr-20 ml-20 d-none d-md-inline"></span>
-                        <button class="search-icon d-none d-md-inline"><span class="mr-15 text-muted font-small"><i class="elegant-icon icon_search mr-5"></i>Pencarian</span></button>
+                        <button class="search-icon d-none d-md-inline" aria-label="Buka form pencarian"><span class="mr-15 text-muted font-small"><i class="elegant-icon icon_search mr-5"></i>Pencarian</span></button>
                         <div class="dark-light-mode-cover">
-                            <a class="dark-light-mode" href="#"></a>
+                            <a class="dark-light-mode" href="#" aria-label="Ganti mode gelap/terang"></a>
                         </div>
                         <?php if (\App\Core\Session::isLoggedIn()): ?>
                             <a class="btn btn-radius bg-primary text-white ml-15 font-small box-shadow" href="<?= BASE_URL ?>/admin">Panel Admin</a>
@@ -181,7 +181,7 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                         <li class="list-inline-item"><a class="social-icon pt text-xs-center" target="_blank" href="#"><i class="elegant-icon social_pinterest "></i></a></li>
                     </ul>
                     <div class="off-canvas-toggle-cover d-inline-block">
-                        <div class="off-canvas-toggle hidden d-inline-block" id="off-canvas-toggle">
+                        <div class="off-canvas-toggle hidden d-inline-block" id="off-canvas-toggle" role="button" aria-label="Buka navigasi samping" tabindex="0">
                             <span></span>
                         </div>
                     </div>
@@ -202,7 +202,7 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                             <div class="input-group w-100">
                                 <input type="text" name="q" class="form-control" placeholder="Cari artikel, topik, atau kata kunci menarik...">
                                 <div class="input-group-append">
-                                    <button class="btn btn-search bg-white" type="submit">
+                                    <button class="btn btn-search bg-white" type="submit" aria-label="Mulai pencarian">
                                         <i class="elegant-icon icon_search"></i>
                                     </button>
                                 </div>
