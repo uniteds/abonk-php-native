@@ -2,7 +2,7 @@
 
 > Sistem Manajemen Konten (CMS) berbasis PHP Native OOP & MVC yang Cepat, Ringan, Aman, dan Bertenaga dengan Desain Premium.
 
-![Abonk CMS Cover](assets/uploads/kotapadang.jpeg)
+![Abonk CMS Cover](assets/uploads/logo_6a054cd68a43b.webp)
 
 ---
 
