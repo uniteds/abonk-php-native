@@ -34,3 +34,6 @@ stories-template/
 
 # Environment variables file
 .env
+
+# Installer security lock
+.installed

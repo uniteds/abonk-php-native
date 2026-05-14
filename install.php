@@ -6,10 +6,36 @@
 
 require_once __DIR__ . '/config/config.php';
 
-// Check if already installed (we can check if the settings table has data)
+// Check Security Lock: If .installed lock file exists, block access immediately!
+if (file_exists(__DIR__ . '/.installed')) {
+    die("<div style='font-family: sans-serif; max-width: 600px; margin: 80px auto; padding: 30px; background: #fff; border: 1px solid #e1e1e1; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;'>
+        <h1 style='color: #d9534f; margin-bottom: 15px;'>🛡️ Instalasi Terkunci!</h1>
+        <p style='color: #555; line-height: 1.6; margin-bottom: 25px;'>Abonk CMS telah berhasil diinstal pada sistem ini dan saat ini dilindungi oleh berkas keamanan <strong>.installed</strong>. Akses ke skrip installer ini dinonaktifkan sepenuhnya untuk mencegah penimpaan atau perusakan basis data.</p>
+        <p style='margin-bottom: 15px;'><a href='index.php' style='display: inline-block; padding: 10px 20px; background: #00A86B; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;'>Menuju Halaman Beranda</a></p>
+        <p><a href='admin/login' style='color: #00A86B; text-decoration: none; font-size: 14px;'>Atau Masuk ke Panel Admin</a></p>
+    </div>");
+}
+
 $installed = false;
 $error = null;
 $success = null;
+
+// Double check database existence
+try {
+    $checkPdo = new PDO(
+        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        DB_USER,
+        DB_PASS,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+    $stmt = $checkPdo->query("SHOW TABLES LIKE 'settings'");
+    if ($stmt && $stmt->rowCount() > 0) {
+        $settingCount = $checkPdo->query("SELECT COUNT(*) FROM `settings`")->fetchColumn();
+        if ($settingCount > 0) {
+            $installed = true;
+        }
+    }
+} catch (Exception $e) {}
 
 if (isset($_POST['install'])) {
     try {
@@ -194,6 +220,7 @@ if (isset($_POST['install'])) {
 
         $success = "CMS Berhasil Diinstal!";
         $installed = true;
+        @file_put_contents(__DIR__ . '/.installed', 'INSTALLED_ON=' . date('Y-m-d H:i:s'));
     } catch (PDOException $e) {
         $error = "Gagal Menginstal Database: " . $e->getMessage();
     }
