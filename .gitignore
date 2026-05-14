@@ -31,3 +31,6 @@ stories-template/*
 stories-template/
 # Log files
 *.log
+
+# Environment variables file
+.env
