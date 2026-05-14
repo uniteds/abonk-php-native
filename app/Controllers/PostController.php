@@ -50,6 +50,8 @@ class PostController extends Controller {
                 $categoryId = Request::post('category_id');
                 $content = Request::post('content');
                 $status = Request::post('status');
+                $isFeatured = Request::post('is_featured') ? 1 : 0;
+                $tags = Request::post('tags');
                 
                 // Retrieve raw content unescaped for rich text editor if needed, but since we are sanitizing,
                 // we can store standard HTML tags since only logged-in users (admin/editors) can write posts.
@@ -82,7 +84,9 @@ class PostController extends Controller {
                             'slug'        => $slug,
                             'content'     => $content,
                             'image'       => $imageName,
-                            'status'      => $status
+                            'status'      => $status,
+                            'is_featured' => $isFeatured,
+                            'tags'        => $tags
                         ];
 
                         $this->postModel->create($postData);
@@ -128,6 +132,8 @@ class PostController extends Controller {
                 $title = Request::post('title');
                 $categoryId = Request::post('category_id');
                 $status = Request::post('status');
+                $isFeatured = Request::post('is_featured') ? 1 : 0;
+                $tags = Request::post('tags');
                 $content = $_POST['content'] ?? ''; // Trusted admin input
                 
                 if (empty($title) || empty($categoryId) || empty($content)) {
@@ -141,7 +147,9 @@ class PostController extends Controller {
                         'title'       => $title,
                         'slug'        => $slug,
                         'content'     => $content,
-                        'status'      => $status
+                        'status'      => $status,
+                        'is_featured' => $isFeatured,
+                        'tags'        => $tags
                     ];
 
                     // Handle image upload

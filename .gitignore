@@ -27,6 +27,7 @@ vendor/
 # User uploaded media (optional: uncomment if you don't want sample uploads in git)
 # assets/uploads/*
 # !assets/uploads/kotapadang.jpeg
-
+stories-template/*
+stories-template/
 # Log files
 *.log

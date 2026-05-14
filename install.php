@@ -68,6 +68,8 @@ if (isset($_POST['install'])) {
             `content` TEXT NOT NULL,
             `image` VARCHAR(255) DEFAULT NULL,
             `status` ENUM('draft', 'published') DEFAULT 'draft',
+            `is_featured` TINYINT(1) DEFAULT 0,
+            `tags` VARCHAR(255) DEFAULT NULL,
             `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,

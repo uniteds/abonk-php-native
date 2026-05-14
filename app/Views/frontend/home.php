@@ -1,232 +1,255 @@
 <?php require_once __DIR__ . '/../layouts/frontend_header.php'; ?>
 
-<!-- Hero Section with Custom Theme Pattern or Background Image -->
-<section class="hero" style="<?= !empty($settings['site_hero_image']) ? 'background: linear-gradient(to bottom, rgba(5,31,20,0.85), rgba(5,31,20,0.95)), url(\'' . BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($settings['site_hero_image']) . '\') center/cover no-repeat;' : '' ?>">
-    <div class="hero-pattern"></div>
-    <div class="hero-content">
-        <h1><?= \App\Core\Request::escape($settings['site_hero_title'] ?? 'Eksplorasi Ide Tanpa Batas') ?></h1>
-        <p><?= \App\Core\Request::escape($settings['site_hero_desc'] ?? 'Platform penerbitan digital modern menggunakan PHP Native OOP.') ?></p>
-        
-        <!-- Search Bar with Color Accent Button -->
-        <form action="<?= BASE_URL ?>" method="GET" class="search-form">
-            <input type="text" name="q" value="<?= \App\Core\Request::escape($search) ?>" class="search-input" placeholder="Cari artikel menarik di sini...">
-            <button type="submit" class="search-btn">Cari</button>
-        </form>
-    </div>
-</section>
-
-<!-- Featured Grid Area (Only on Page 1, without search) -->
-<?php if ($currentPage === 1 && empty($search) && count($posts) >= 1): ?>
-    <section class="featured-section">
-        <div class="featured-grid">
-            
-            <!-- Left Area: Featured Post (Large Card) -->
-            <div class="featured-left">
-                <?php $featured = $posts[0]; ?>
-                <article class="featured-card-large">
-                    <div class="featured-img-wrapper">
-                        <?php if (!empty($featured['image'])): ?>
-                            <img class="featured-img" src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($featured['image']) ?>" alt="<?= \App\Core\Request::escape($featured['title']) ?>">
-                        <?php else: ?>
-                            <div class="featured-placeholder">
-                                <span><?= substr(\App\Core\Request::escape($featured['category_name']), 0, 3) ?></span>
-                            </div>
-                        <?php endif; ?>
-                        <span class="post-badge"><?= \App\Core\Request::escape($featured['category_name']) ?></span>
+    <main>
+        <!-- Hero Featured Area -->
+        <div class="featured-1" style="<?= !empty($settings['site_hero_image']) ? 'background: linear-gradient(to bottom, rgba(5,31,20,0.85), rgba(5,31,20,0.95)), url(\'' . BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($settings['site_hero_image']) . '\') center/cover no-repeat;' : '' ?>">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 align-self-center">
+                        <p class="text-muted"><span class="typewrite d-inline" data-period="2000" data-type='[ " Eksplorasi Ide. ", "Wawasan Baru. ", "Inspirasi Digital " ]'></span></p>
+                        <h2 style="<?= !empty($settings['site_hero_image']) ? 'color: white;' : '' ?>"><?= \App\Core\Request::escape($settings['site_hero_title'] ?? 'Eksplorasi Ide Tanpa Batas') ?></h2>
+                        <h5 class="text-muted" style="margin-top: 15px; <?= !empty($settings['site_hero_image']) ? 'color: rgba(255,255,255,0.8) !important;' : '' ?>"><?= \App\Core\Request::escape($settings['site_hero_desc'] ?? 'Platform penerbitan digital modern menggunakan PHP Native OOP.') ?></h5>
+                        <form action="<?= BASE_URL ?>" method="GET" class="input-group form-subcriber mt-30 d-flex">
+                            <input type="text" name="q" value="<?= \App\Core\Request::escape($search) ?>" class="form-control bg-white font-small" placeholder="Cari artikel menarik di sini...">
+                            <button class="btn bg-primary text-white" type="submit">Cari</button>
+                        </form>
                     </div>
-                    
-                    <div class="featured-body">
-                        <div class="post-meta">
-                            <span>
-                                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                <?= \App\Core\Request::escape($featured['author_name']) ?>
-                            </span>
-                            <span>
-                                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <?= date('d M Y', strtotime($featured['created_at'])) ?>
-                            </span>
-                        </div>
-                        <h2 class="featured-title">
-                            <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($featured['slug']) ?>">
-                                <?= \App\Core\Request::escape($featured['title']) ?>
-                            </a>
-                        </h2>
-                        <div class="featured-excerpt">
-                            <?= strip_tags($featured['content']) ?>
-                        </div>
-                        <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($featured['slug']) ?>" class="post-readmore">
-                            Baca Selengkapnya
-                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
-                        </a>
+                    <div class="col-lg-6 text-end d-none d-lg-block">
+                        <img src="<?= BASE_URL ?>/assets/imgs/authors/featured-bg.webp" alt="Hero Featured">
                     </div>
-                </article>
-            </div>
-            
-            <!-- Right Area: Recent/Related Posts (4 Small Cards) -->
-            <div class="featured-right">
-                <h3 class="sidebar-title">Rekomendasi Terbaru</h3>
-                <div class="small-cards-stack">
-                    <?php 
-                    $smallPosts = array_slice($posts, 1, 4); 
-                    if (empty($smallPosts)): 
-                    ?>
-                        <p style="color: var(--color-text-muted); font-size: 14px; font-style: italic;">Belum ada artikel tambahan.</p>
-                    <?php 
-                    else:
-                        foreach ($smallPosts as $small): 
-                    ?>
-                        <article class="featured-card-small">
-                            <div class="small-img-wrapper">
-                                <?php if (!empty($small['image'])): ?>
-                                    <img class="small-img" src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($small['image']) ?>" alt="<?= \App\Core\Request::escape($small['title']) ?>">
-                                <?php else: ?>
-                                    <div class="small-placeholder">
-                                        <span><?= substr(\App\Core\Request::escape($small['category_name']), 0, 2) ?></span>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            <div class="small-body">
-                                <span class="small-cat-badge"><?= \App\Core\Request::escape($small['category_name']) ?></span>
-                                <h4 class="small-title">
-                                    <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($small['slug']) ?>">
-                                        <?= \App\Core\Request::escape($small['title']) ?>
-                                    </a>
-                                </h4>
-                                <span class="small-date"><?= date('d M Y', strtotime($small['created_at'])) ?></span>
-                            </div>
-                        </article>
-                    <?php 
-                        endforeach; 
-                    endif;
-                    ?>
                 </div>
             </div>
-            
         </div>
-    </section>
-<?php endif; ?>
 
-<!-- Main Grid Layout -->
-<div class="main-layout" style="margin-top: <?= ($currentPage === 1 && empty($search) && count($posts) >= 1) ? '10px' : '40px' ?>;">
-    
-    <!-- Left Column: Article List -->
-    <div class="content-area">
-        <h2 class="section-title">
-            <?php if (!empty($search)): ?>
-                Hasil Pencarian: "<?= \App\Core\Request::escape($search) ?>"
-            <?php elseif ($currentPage === 1): ?>
-                Artikel Lainnya
-            <?php else: ?>
-                Artikel Terbaru
-            <?php endif; ?>
-        </h2>
-
-        <?php 
-        // If on page 1 of home, slice the posts array to exclude the first 5 posts that are already featured
-        $displayPosts = $posts;
-        if ($currentPage === 1 && empty($search)) {
-            $displayPosts = array_slice($posts, 5);
-        }
-        ?>
-
-        <?php if (empty($displayPosts)): ?>
-            <div style="background-color: var(--color-white); border: 1px solid rgba(18,18,18,0.05); padding: 40px; border-radius: 16px; text-align: center; color: var(--color-text-muted);">
-                <p style="font-size: 16px; font-weight: 600;">Belum ada artikel tambahan lainnya.</p>
-                <a href="<?= BASE_URL ?>" style="color: var(--color-accent); font-weight: 700; text-decoration: none; display: inline-block; margin-top: 15px;">Kembali ke Beranda</a>
-            </div>
-        <?php else: ?>
-            <div class="classic-posts-list">
-                <?php foreach ($displayPosts as $post): ?>
-                    <article class="classic-post-item">
-                        <div class="classic-post-meta">
-                            <span class="classic-cat"><?= \App\Core\Request::escape($post['category_name']) ?></span>
-                            <span class="classic-date"><?= date('d M Y', strtotime($post['created_at'])) ?></span>
-                            <span class="classic-author">oleh <?= \App\Core\Request::escape($post['author_name']) ?></span>
+        <div class="container">
+            <div class="hot-tags pt-30 pb-30 font-small align-self-center">
+                <div class="widget-header-3">
+                    <div class="row align-self-center">
+                        <div class="col-md-4 align-self-center">
+                            <h5 class="widget-title">Artikel Unggulan</h5>
                         </div>
-                        <h3 class="classic-post-title">
-                            <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($post['slug']) ?>">
-                                <?= \App\Core\Request::escape($post['title']) ?>
-                            </a>
-                        </h3>
-                        <div class="classic-post-layout">
-                            <?php if (!empty($post['image'])): ?>
-                                <div class="classic-img-wrapper">
-                                    <img src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($post['image']) ?>" alt="<?= \App\Core\Request::escape($post['title']) ?>">
+                        <div class="col-md-8 text-md-end font-small align-self-center">
+                            <p class="d-inline-block mr-5 mb-0"><i class="elegant-icon icon_tag_alt mr-5 text-muted"></i>Tag Hangat:</p>
+                            <ul class="list-inline d-inline-block tags">
+                                <?php if (!empty($popularTags)): ?>
+                                    <?php foreach ($popularTags as $ptag): ?>
+                                        <li class="list-inline-item"><a href="<?= BASE_URL ?>/?tag=<?= urlencode($ptag) ?>"># <?= \App\Core\Request::escape($ptag) ?></a></li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li class="list-inline-item"><a href="<?= BASE_URL ?>"># Terkini</a></li>
+                                    <li class="list-inline-item"><a href="<?= BASE_URL ?>"># Inspirasi</a></li>
+                                    <li class="list-inline-item"><a href="<?= BASE_URL ?>"># Digital</a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php 
+            $allGrid = !empty($featuredPosts) ? $featuredPosts : [];
+            $recentCountNeeded = 6 - count($allGrid);
+            if ($recentCountNeeded > 0 && !empty($recentPosts)) {
+                foreach ($recentPosts as $rp) {
+                    $found = false;
+                    foreach ($allGrid as $f) {
+                        if ($f['id'] == $rp['id']) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if (!$found) {
+                        $allGrid[] = $rp;
+                    }
+                    if (count($allGrid) >= 6) {
+                        break;
+                    }
+                }
+            }
+            $sliderPosts = array_slice($allGrid, 0, 2);
+            $cardPosts   = array_slice($allGrid, 2, 4);
+            ?>
+            <div class="loop-grid mb-30">
+                <div class="row">
+                    <div class="col-lg-8 mb-30">
+                        <div class="carausel-post-1 hover-up border-radius-10 overflow-hidden transition-normal position-relative wow fadeInUp animated">
+                            <div class="arrow-cover"></div>
+                            <div class="slide-fade">
+                                <?php foreach ($sliderPosts as $feat): ?>
+                                    <div class="position-relative post-thumb">
+                                        <div class="thumb-overlay img-hover-slide position-relative" style="background-image: url(<?= !empty($feat['image']) ? BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($feat['image']) : BASE_URL . '/assets/imgs/news/news-1.jpg' ?>)">
+                                            <a class="img-link" href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($feat['slug']) ?>"></a>
+                                            <span class="top-left-icon bg-warning"><i class="elegant-icon icon_star_alt"></i></span>
+                                            <div class="post-content-overlay text-white ml-30 mr-30 pb-30">
+                                                <div class="entry-meta meta-0 font-small mb-20">
+                                                    <a href="<?= BASE_URL ?>/category/<?= \App\Core\Request::escape($feat['category_slug'] ?? '') ?>"><span class="post-cat text-info text-uppercase"><?= \App\Core\Request::escape($feat['category_name'] ?? 'Umum') ?></span></a>
+                                                </div>
+                                                <h3 class="post-title font-weight-900 mb-20">
+                                                    <a class="text-white" href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($feat['slug']) ?>"><?= \App\Core\Request::escape($feat['title']) ?></a>
+                                                </h3>
+                                                <div class="entry-meta meta-1 font-small text-white mt-10 pr-5 pl-5">
+                                                    <span class="post-on"><?= date('d M Y', strtotime($feat['created_at'])) ?></span>
+                                                    <span class="hit-count has-dot"><?= $feat['views_count'] ?? rand(100, 999) ?> Tayangan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php 
+                    $delays = ['0.2s', '', '0.2s', '0.4s'];
+                    foreach ($cardPosts as $idx => $card): 
+                        $delay = $delays[$idx] ?? '';
+                    ?>
+                    <article class="col-lg-4 col-md-6 mb-30 wow fadeInUp animated" <?= !empty($delay) ? 'data-wow-delay="' . $delay . '"' : '' ?>>
+                        <div class="post-card-1 border-radius-10 hover-up">
+                            <div class="post-thumb thumb-overlay img-hover-slide position-relative" style="background-image: url(<?= !empty($card['image']) ? BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($card['image']) : BASE_URL . '/assets/imgs/news/news-1.jpg' ?>)">
+                                <a class="img-link" href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($card['slug']) ?>"></a>
+                                <?php if ($idx == 0): ?>
+                                    <span class="top-right-icon bg-success"><i class="elegant-icon icon_camera_alt"></i></span>
+                                <?php elseif ($idx == 3): ?>
+                                    <span class="top-right-icon bg-info"><i class="elegant-icon icon_headphones"></i></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="post-content p-30">
+                                <div class="entry-meta meta-0 font-small mb-10">
+                                    <a href="<?= BASE_URL ?>/category/<?= \App\Core\Request::escape($card['category_slug'] ?? '') ?>"><span class="post-cat text-info"><?= \App\Core\Request::escape($card['category_name'] ?? 'Umum') ?></span></a>
                                 </div>
-                            <?php endif; ?>
-                            <div class="classic-text-body">
-                                <div class="classic-post-excerpt">
-                                    <?= strip_tags($post['content']) ?>
+                                <div class="d-flex post-card-content">
+                                    <h5 class="post-title mb-20 font-weight-900">
+                                        <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($card['slug']) ?>"><?= \App\Core\Request::escape($card['title']) ?></a>
+                                    </h5>
+                                    <div class="post-excerpt mb-25 font-small text-muted">
+                                        <p>Edisi pilihan redaksi khusus untuk Anda nikmati hari ini.</p>
+                                    </div>
+                                    <div class="entry-meta meta-1 float-start font-x-small text-uppercase">
+                                        <span class="post-on"><?= date('d M Y', strtotime($card['created_at'])) ?></span>
+                                        <span class="post-by has-dot"><?= $card['views_count'] ?? rand(100, 999) ?> tayangan</span>
+                                    </div>
                                 </div>
-                                <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($post['slug']) ?>" class="classic-readmore">
-                                    Baca Selengkapnya
-                                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
-                                </a>
                             </div>
                         </div>
                     </article>
-                <?php endforeach; ?>
-            </div>
-
-            <!-- Dynamic Pagination widget -->
-            <?php if ($totalPages > 1): ?>
-                <div class="pagination">
-                    <!-- Prev page link -->
-                    <a href="<?= BASE_URL ?>?q=<?= urlencode($search) ?>&page=<?= $currentPage - 1 ?>" class="pagination-item <?= ($currentPage <= 1) ? 'disabled' : '' ?>">
-                        Sebelumnya
-                    </a>
-                    
-                    <!-- Page Numbers list -->
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <a href="<?= BASE_URL ?>?q=<?= urlencode($search) ?>&page=<?= $i ?>" class="pagination-item <?= ($i === $currentPage) ? 'active' : '' ?>">
-                            <?= $i ?>
-                        </a>
-                    <?php endfor; ?>
-
-                    <!-- Next page link -->
-                    <a href="<?= BASE_URL ?>?q=<?= urlencode($search) ?>&page=<?= $currentPage + 1 ?>" class="pagination-item <?= ($currentPage >= $totalPages) ? 'disabled' : '' ?>">
-                        Berikutnya
-                    </a>
+                    <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
-        <?php endif; ?>
-    </div>
-
-    <!-- Right Column: Sidebar -->
-    <aside class="sidebar" style="height: auto; border: none; padding: 0; background: transparent;">
-        <!-- Categories Widget -->
-        <div class="widget">
-            <h4 class="widget-title">Kategori</h4>
-            <ul class="category-list">
-                <?php foreach ($categories as $cat): ?>
-                    <li>
-                        <a href="<?= BASE_URL ?>/category/<?= \App\Core\Request::escape($cat['slug']) ?>">
-                            <?= \App\Core\Request::escape($cat['name']) ?>
-                            <span class="cat-count"><?= $cat['post_count'] ?></span>
-                        </a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-
-        <!-- Recent Posts Widget -->
-        <div class="widget">
-            <h4 class="widget-title">Artikel Terbaru</h4>
-            <div class="recent-posts">
-                <?php foreach ($recentPosts as $recent): ?>
-                    <div class="recent-item">
-                        <h5 class="recent-item-title">
-                            <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($recent['slug']) ?>">
-                                <?= \App\Core\Request::escape($recent['title']) ?>
-                            </a>
-                        </h5>
-                        <span class="recent-item-date"><?= date('d F Y', strtotime($recent['created_at'])) ?></span>
-                    </div>
-                <?php endforeach; ?>
             </div>
         </div>
-    </aside>
 
-</div>
+        <!-- Main Articles Section -->
+        <div class="bg-grey pt-50 pb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="post-module-2">
+                            <div class="widget-header-1 position-relative mb-30 wow fadeInUp animated">
+                                <h5 class="mt-5 mb-30"><?= !empty($tagFilter) ? "Artikel dengan Tag: '#" . \App\Core\Request::escape($tagFilter) . "'" : (!empty($search) ? "Hasil Pencarian: '" . \App\Core\Request::escape($search) . "'" : "Artikel Terbaru") ?></h5>
+                            </div>
+                            <div class="loop-list loop-list-style-1">
+                                <div class="row">
+                                    <?php if (empty($posts)): ?>
+                                        <div class="col-12"><p class="text-muted">Belum ada artikel yang dipublikasikan.</p></div>
+                                    <?php else: ?>
+                                        <?php foreach ($posts as $post): ?>
+                                            <article class="col-md-6 mb-40 wow fadeInUp animated">
+                                                <div class="post-card-1 border-radius-10 hover-up" style="height: 100%; display: flex; flex-direction: column; background: white;">
+                                                    <div class="post-thumb thumb-overlay img-hover-slide position-relative" style="background-image: url(<?= !empty($post['image']) ? BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($post['image']) : BASE_URL . '/assets/imgs/news/news-1.jpg' ?>); min-height: 220px;">
+                                                        <a class="img-link" href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($post['slug']) ?>"></a>
+                                                        <span class="top-right-icon bg-success"><i class="elegant-icon icon_camera_alt"></i></span>
+                                                    </div>
+                                                    <div class="post-content p-30" style="flex-grow: 1; display: flex; flex-direction: column;">
+                                                        <div class="entry-meta meta-0 font-small mb-10">
+                                                            <a href="<?= BASE_URL ?>/category/<?= \App\Core\Request::escape($post['category_slug']) ?>"><span class="post-cat text-success"><?= \App\Core\Request::escape($post['category_name']) ?></span></a>
+                                                        </div>
+                                                        <div class="d-flex post-card-content" style="flex-grow: 1; flex-direction: column; justify-content: space-between;">
+                                                            <h5 class="post-title mb-20 font-weight-900">
+                                                                <a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($post['slug']) ?>"><?= \App\Core\Request::escape($post['title']) ?></a>
+                                                            </h5>
+                                                            <div class="post-excerpt mb-25 font-small text-muted">
+                                                                <p><?= \App\Core\Request::escape(substr(strip_tags(html_entity_decode($post['content'])), 0, 110)) ?>...</p>
+                                                            </div>
+                                                            <div class="entry-meta meta-1 float-start font-x-small text-uppercase">
+                                                                <span class="post-on"><?= date('d M Y', strtotime($post['created_at'])) ?></span>
+                                                                <span class="post-by has-dot"><?= $post['views_count'] ?? rand(100, 999) ?> tayangan</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <!-- Pagination -->
+                            <?php if ($totalPages > 1): ?>
+                                <div class="pagination-area mb-30">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-start">
+                                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                                <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                                                    <a class="page-link" href="<?= BASE_URL ?>?page=<?= $i ?><?= !empty($search) ? '&q=' . urlencode($search) : '' ?>"><?= $i ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="widget-area">
+                            <div class="sidebar-widget widget-about mb-50 pt-30 pr-30 pb-30 pl-30 bg-white border-radius-5 has-border wow fadeInUp animated">
+                                <img class="about-author-img mb-25 img-circle" src="<?= !empty($adminUser['profile_photo']) ? BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($adminUser['profile_photo']) : BASE_URL . '/assets/imgs/authors/author.jpg' ?>" alt="<?= \App\Core\Request::escape($adminUser['name'] ?? 'Author') ?>" style="width: 110px; height: 110px; object-fit: cover;">
+                                <h5 class="mb-20"><?= \App\Core\Request::escape($adminUser['name'] ?? 'Abonk CMS') ?></h5>
+                                <p class="font-medium text-muted"><?= !empty($adminUser['bio']) ? nl2br(\App\Core\Request::escape($adminUser['bio'])) : 'Portal berita dan blog modern yang menyajikan informasi tajam, terpercaya, dan mendalam.' ?></p>
+                                <div class="author-social">
+                                    <?php if (!empty($adminUser['social_facebook'])): ?>
+                                        <a class="social-icon fb text-xs-center" target="_blank" href="<?= \App\Core\Request::escape($adminUser['social_facebook']) ?>"><i class="elegant-icon social_facebook"></i></a>
+                                    <?php endif; ?>
+                                    <?php if (!empty($adminUser['social_twitter'])): ?>
+                                        <a class="social-icon tw text-xs-center" target="_blank" href="<?= \App\Core\Request::escape($adminUser['social_twitter']) ?>"><i class="elegant-icon social_twitter"></i></a>
+                                    <?php endif; ?>
+                                    <?php if (!empty($adminUser['social_instagram'])): ?>
+                                        <a class="social-icon pt text-xs-center" target="_blank" href="<?= \App\Core\Request::escape($adminUser['social_instagram']) ?>"><i class="elegant-icon social_instagram"></i></a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-widget widget-latest-posts mb-50 wow fadeInUp animated">
+                                <div class="widget-header-1 position-relative mb-30">
+                                    <h5 class="mt-5 mb-30">Sedang Hangat</h5>
+                                </div>
+                                <div class="post-block-list post-module-1">
+                                    <ul class="list-post">
+                                        <?php foreach (array_slice($posts, 0, 5) as $hot): ?>
+                                            <li class="mb-30">
+                                                <div class="d-flex hover-up-2 transition-normal">
+                                                    <div class="post-thumb post-thumb-80 d-flex mr-15 border-radius-5 img-hover-scale overflow-hidden">
+                                                        <a class="color-white" href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($hot['slug']) ?>">
+                                                            <img src="<?= !empty($hot['image']) ? BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($hot['image']) : BASE_URL . '/assets/imgs/news/thumb-1.jpg' ?>" alt="<?= \App\Core\Request::escape($hot['title']) ?>">
+                                                        </a>
+                                                    </div>
+                                                    <div class="post-content media-body">
+                                                        <h6 class="post-title mb-15 text-limit-2-row font-medium"><a href="<?= BASE_URL ?>/post/<?= \App\Core\Request::escape($hot['slug']) ?>"><?= \App\Core\Request::escape($hot['title']) ?></a></h6>
+                                                        <div class="entry-meta meta-1 float-start font-x-small text-uppercase">
+                                                            <span class="post-on"><?= date('d M Y', strtotime($hot['created_at'])) ?></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
 <?php require_once __DIR__ . '/../layouts/frontend_footer.php'; ?>

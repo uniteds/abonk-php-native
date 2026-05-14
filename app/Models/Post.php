@@ -40,7 +40,7 @@ class Post extends Model {
     }
 
     // Get published posts with options (search, category, pagination)
-    public function getPublished($limit = 6, $offset = 0, $search = '', $categoryId = null) {
+    public function getPublished($limit = 6, $offset = 0, $search = '', $categoryId = null, $tag = null) {
         $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name, u.profile_photo as author_photo, u.name as author_full_name, u.bio as author_bio 
                 FROM posts p
                 JOIN categories c ON p.category_id = c.id
@@ -50,14 +50,20 @@ class Post extends Model {
         $params = [];
 
         if (!empty($search)) {
-            $sql .= " AND (p.title LIKE :search OR p.content LIKE :search2)";
+            $sql .= " AND (p.title LIKE :search OR p.content LIKE :search2 OR p.tags LIKE :search3)";
             $params['search'] = "%{$search}%";
             $params['search2'] = "%{$search}%";
+            $params['search3'] = "%{$search}%";
         }
 
         if ($categoryId !== null) {
             $sql .= " AND p.category_id = :category_id";
             $params['category_id'] = $categoryId;
+        }
+
+        if (!empty($tag)) {
+            $sql .= " AND p.tags LIKE :tag";
+            $params['tag'] = "%{$tag}%";
         }
 
         $sql .= " ORDER BY p.created_at DESC LIMIT :limit OFFSET :offset";
@@ -77,19 +83,25 @@ class Post extends Model {
     }
 
     // Count published posts for pagination
-    public function countPublished($search = '', $categoryId = null) {
+    public function countPublished($search = '', $categoryId = null, $tag = null) {
         $sql = "SELECT COUNT(*) FROM posts WHERE status = 'published'";
         $params = [];
 
         if (!empty($search)) {
-            $sql .= " AND (title LIKE :search OR content LIKE :search2)";
+            $sql .= " AND (title LIKE :search OR content LIKE :search2 OR tags LIKE :search3)";
             $params['search'] = "%{$search}%";
             $params['search2'] = "%{$search}%";
+            $params['search3'] = "%{$search}%";
         }
 
         if ($categoryId !== null) {
             $sql .= " AND category_id = :category_id";
             $params['category_id'] = $categoryId;
+        }
+
+        if (!empty($tag)) {
+            $sql .= " AND tags LIKE :tag";
+            $params['tag'] = "%{$tag}%";
         }
 
         $stmt = $this->db->query($sql, $params);
@@ -98,7 +110,11 @@ class Post extends Model {
 
     // Get recent published posts
     public function getRecent($limit = 5) {
-        $sql = "SELECT id, title, slug, created_at FROM posts WHERE status = 'published' ORDER BY created_at DESC LIMIT :limit";
+        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name, u.profile_photo as author_photo, u.name as author_full_name 
+                FROM posts p
+                JOIN categories c ON p.category_id = c.id
+                JOIN users u ON p.user_id = u.id
+                WHERE p.status = 'published' ORDER BY p.created_at DESC LIMIT :limit";
         
         $stmt = $this->db->getConnection()->prepare($sql);
         $stmt->bindValue('limit', (int) $limit, \PDO::PARAM_INT);
@@ -107,10 +123,45 @@ class Post extends Model {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    // Get featured published posts
+    public function getFeatured($limit = 5) {
+        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name, u.profile_photo as author_photo, u.name as author_full_name 
+                FROM posts p
+                JOIN categories c ON p.category_id = c.id
+                JOIN users u ON p.user_id = u.id
+                WHERE p.status = 'published' AND p.is_featured = 1
+                ORDER BY p.created_at DESC LIMIT :limit";
+        
+        $stmt = $this->db->getConnection()->prepare($sql);
+        $stmt->bindValue('limit', (int) $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    // Get distinct/popular tags from published posts
+    public function getPopularTags($limit = 6) {
+        $sql = "SELECT tags FROM posts WHERE status = 'published' AND tags IS NOT NULL AND tags != '' ORDER BY created_at DESC";
+        $rows = $this->db->fetchAll($sql);
+        
+        $tagCounts = [];
+        foreach ($rows as $row) {
+            $parts = array_map('trim', explode(',', $row['tags']));
+            foreach ($parts as $p) {
+                if (!empty($p)) {
+                    $tagCounts[$p] = ($tagCounts[$p] ?? 0) + 1;
+                }
+            }
+        }
+        
+        arsort($tagCounts);
+        return array_slice(array_keys($tagCounts), 0, $limit);
+    }
+
     // Create a new post
     public function create($data) {
-        $sql = "INSERT INTO posts (user_id, category_id, title, slug, content, image, status) 
-                VALUES (:user_id, :category_id, :title, :slug, :content, :image, :status)";
+        $sql = "INSERT INTO posts (user_id, category_id, title, slug, content, image, status, is_featured, tags) 
+                VALUES (:user_id, :category_id, :title, :slug, :content, :image, :status, :is_featured, :tags)";
         
         $params = [
             'user_id'     => $data['user_id'],
@@ -119,7 +170,9 @@ class Post extends Model {
             'slug'        => $data['slug'],
             'content'     => $data['content'],
             'image'       => $data['image'],
-            'status'      => $data['status']
+            'status'      => $data['status'],
+            'is_featured' => $data['is_featured'] ?? 0,
+            'tags'        => $data['tags'] ?? null
         ];
 
         return $this->db->query($sql, $params);
@@ -128,7 +181,7 @@ class Post extends Model {
     // Update a post
     public function update($id, $data) {
         if (array_key_exists('image', $data)) {
-            $sql = "UPDATE posts SET category_id = :category_id, title = :title, slug = :slug, content = :content, image = :image, status = :status WHERE id = :id";
+            $sql = "UPDATE posts SET category_id = :category_id, title = :title, slug = :slug, content = :content, image = :image, status = :status, is_featured = :is_featured, tags = :tags WHERE id = :id";
             $params = [
                 'id'          => $id,
                 'category_id' => $data['category_id'],
@@ -136,17 +189,21 @@ class Post extends Model {
                 'slug'        => $data['slug'],
                 'content'     => $data['content'],
                 'image'       => $data['image'],
-                'status'      => $data['status']
+                'status'      => $data['status'],
+                'is_featured' => $data['is_featured'] ?? 0,
+                'tags'        => $data['tags'] ?? null
             ];
         } else {
-            $sql = "UPDATE posts SET category_id = :category_id, title = :title, slug = :slug, content = :content, status = :status WHERE id = :id";
+            $sql = "UPDATE posts SET category_id = :category_id, title = :title, slug = :slug, content = :content, status = :status, is_featured = :is_featured, tags = :tags WHERE id = :id";
             $params = [
                 'id'          => $id,
                 'category_id' => $data['category_id'],
                 'title'       => $data['title'],
                 'slug'        => $data['slug'],
                 'content'     => $data['content'],
-                'status'      => $data['status']
+                'status'      => $data['status'],
+                'is_featured' => $data['is_featured'] ?? 0,
+                'tags'        => $data['tags'] ?? null
             ];
         }
 

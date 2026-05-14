@@ -57,6 +57,17 @@ require_once __DIR__ . '/../../layouts/admin_header.php';
             </select>
         </div>
 
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 15px;">
+            <input type="checkbox" name="is_featured" id="is_featured" value="1" <?= (isset($_POST['is_featured']) && $_POST['is_featured'] == 1) ? 'checked' : '' ?> style="width: auto; height: 20px;">
+            <label for="is_featured" style="margin-bottom: 0; font-weight: 600; cursor: pointer;">Jadikan Pos Unggulan (Featured Post)</label>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Tag Artikel (Pisahkan dengan koma)</label>
+            <input type="text" name="tags" id="tags" class="form-control" placeholder="Contoh: teknologi, pemrograman, web native, php" value="<?= isset($_POST['tags']) ? \App\Core\Request::escape($_POST['tags']) : '' ?>">
+            <p class="form-text">Ketikkan kata kunci / tag untuk artikel ini, pisahkan dengan koma jika lebih dari satu.</p>
+        </div>
+
         <div class="form-group">
             <label for="content">Isi Artikel</label>
             <textarea name="content" id="content" class="form-control editor-textarea" placeholder="Tuliskan isi artikel Anda di sini secara mendalam..."><?= isset($_POST['content']) ? \App\Core\Request::escape($_POST['content']) : '' ?></textarea>

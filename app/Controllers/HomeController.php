@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Setting;
 use App\Models\NavigationMenu;
 use App\Models\Page;
+use App\Models\User;
 
 /**
  * Home Controller (Frontend)
@@ -19,6 +20,7 @@ class HomeController extends Controller {
     private $settingModel;
     private $menuModel;
     private $pageModel;
+    private $userModel;
     private $globalSettings;
     private $globalMenus;
 
@@ -28,6 +30,7 @@ class HomeController extends Controller {
         $this->settingModel = new Setting();
         $this->menuModel = new NavigationMenu();
         $this->pageModel = new Page();
+        $this->userModel = new User();
         
         // Fetch all settings dynamically to make them available in all frontend views
         $this->globalSettings = $this->settingModel->getAll();
@@ -39,6 +42,7 @@ class HomeController extends Controller {
     // Homepage with search, pagination, and sidebars
     public function index() {
         $search = Request::get('q', '');
+        $tagFilter = Request::get('tag', '');
         $page = (int) Request::get('page', 1);
         if ($page < 1) $page = 1;
 
@@ -46,31 +50,41 @@ class HomeController extends Controller {
         $offset = ($page - 1) * $limit;
 
         // Get matching published posts
-        $posts = $this->postModel->getPublished($limit, $offset, $search);
+        $posts = $this->postModel->getPublished($limit, $offset, $search, null, $tagFilter);
         
         // Count matching posts for pagination
-        $totalPosts = $this->postModel->countPublished($search);
+        $totalPosts = $this->postModel->countPublished($search, null, $tagFilter);
         $totalPages = ceil($totalPosts / $limit);
 
         // Sidebar widgets data
         $categories = $this->categoryModel->getAllWithCount();
         $recentPosts = $this->postModel->getRecent(5);
+        $featuredPosts = $this->postModel->getFeatured(6);
+        $adminUser = $this->userModel->findByUsername('admin');
+        $popularTags = $this->postModel->getPopularTags(6);
 
         $canonicalUrl = BASE_URL;
         if ($page > 1) {
             $canonicalUrl .= '?page=' . $page;
         }
+        if (!empty($tagFilter)) {
+            $canonicalUrl .= (!strpos($canonicalUrl, '?') ? '?' : '&') . 'tag=' . urlencode($tagFilter);
+        }
 
         $this->view('frontend/home', [
-            'canonicalUrl' => $canonicalUrl,
-            'settings'     => $this->globalSettings,
-            'menus'        => $this->globalMenus,
-            'posts'        => $posts,
-            'categories'   => $categories,
-            'recentPosts'  => $recentPosts,
-            'search'       => $search,
-            'currentPage'  => $page,
-            'totalPages'   => $totalPages
+            'canonicalUrl'  => $canonicalUrl,
+            'settings'      => $this->globalSettings,
+            'menus'         => $this->globalMenus,
+            'posts'         => $posts,
+            'categories'    => $categories,
+            'recentPosts'   => $recentPosts,
+            'featuredPosts' => $featuredPosts,
+            'adminUser'     => $adminUser,
+            'popularTags'   => $popularTags,
+            'search'        => $search,
+            'tagFilter'     => $tagFilter,
+            'currentPage'   => $page,
+            'totalPages'    => $totalPages
         ]);
     }
 
@@ -141,6 +155,7 @@ class HomeController extends Controller {
         // Sidebar widgets data
         $categories = $this->categoryModel->getAllWithCount();
         $recentPosts = $this->postModel->getRecent(5);
+        $adminUser = $this->userModel->findByUsername('admin');
 
         $metaDescription = "Kumpulan pos artikel dalam kategori " . $category['name'] . ".";
         $ogImage = BASE_URL . '/assets/uploads/kotapadang.jpeg';
@@ -159,6 +174,7 @@ class HomeController extends Controller {
             'posts'           => $posts,
             'categories'      => $categories,
             'recentPosts'     => $recentPosts,
+            'adminUser'       => $adminUser,
             'search'          => $search,
             'currentPage'     => $page,
             'totalPages'      => $totalPages

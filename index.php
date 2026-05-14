@@ -32,6 +32,8 @@ try {
     try { $db->exec("ALTER TABLE `users` ADD COLUMN `social_instagram` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
     try { $db->exec("ALTER TABLE `users` ADD COLUMN `social_linkedin` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
     try { $db->exec("ALTER TABLE `users` ADD COLUMN `social_github` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
+    try { $db->exec("ALTER TABLE `posts` ADD COLUMN `is_featured` TINYINT(1) DEFAULT 0"); } catch (\Exception $e) {}
+    try { $db->exec("ALTER TABLE `posts` ADD COLUMN `tags` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
 
     // Auto-migration check: Ensure pages table exists
     $db->exec("CREATE TABLE IF NOT EXISTS `pages` (
