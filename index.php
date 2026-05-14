@@ -34,6 +34,7 @@ try {
     try { $db->exec("ALTER TABLE `users` ADD COLUMN `social_github` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
     try { $db->exec("ALTER TABLE `posts` ADD COLUMN `is_featured` TINYINT(1) DEFAULT 0"); } catch (\Exception $e) {}
     try { $db->exec("ALTER TABLE `posts` ADD COLUMN `tags` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
+    try { $db->exec("ALTER TABLE `pages` ADD COLUMN `show_in_topbar` TINYINT(1) DEFAULT 0"); } catch (\Exception $e) {}
 
     // Auto-migration check: Ensure pages table exists
     $db->exec("CREATE TABLE IF NOT EXISTS `pages` (
@@ -42,6 +43,7 @@ try {
         `slug` VARCHAR(255) NOT NULL UNIQUE,
         `content` TEXT NOT NULL,
         `status` ENUM('draft', 'published') DEFAULT 'draft',
+        `show_in_topbar` TINYINT(1) DEFAULT 0,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");

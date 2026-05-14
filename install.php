@@ -109,6 +109,7 @@ if (isset($_POST['install'])) {
             `slug` VARCHAR(255) NOT NULL UNIQUE,
             `content` TEXT NOT NULL,
             `status` ENUM('draft', 'published') DEFAULT 'draft',
+            `show_in_topbar` TINYINT(1) DEFAULT 0,
             `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
@@ -165,6 +166,20 @@ if (isset($_POST['install'])) {
                 'name'        => 'Umum',
                 'slug'        => 'umum',
                 'description' => 'Kategori artikel umum secara default.'
+            ]);
+        }
+
+        // 8b. Seed Default Static Page (Tentang Kami)
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM `pages` WHERE `slug` = 'tentang-kami'");
+        $stmt->execute();
+        if ($stmt->fetchColumn() == 0) {
+            $insertPage = $pdo->prepare("INSERT INTO `pages` (`title`, `slug`, `content`, `status`, `show_in_topbar`) VALUES (:title, :slug, :content, :status, :show_in_topbar)");
+            $insertPage->execute([
+                'title'          => 'Tentang Kami',
+                'slug'           => 'tentang-kami',
+                'content'        => '<h2>Mengenal Abonk CMS Lebih Dekat</h2><p>Abonk CMS adalah platform penerbitan digital masa depan yang memprioritaskan kesederhanaan, kecepatan, dan desain visual yang menawan.</p>',
+                'status'         => 'published',
+                'show_in_topbar' => 1
             ]);
         }
 

@@ -150,10 +150,17 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                         </a>
                     </div>
                     <div class="col-md-9 col-6 text-end header-top-right">
-                        <ul class="list-inline nav-topbar d-none d-md-inline">
-                            <li class="list-inline-item"><a href="<?= BASE_URL ?>/page/tentang-kami"><i class="elegant-icon icon_document_alt mr-5"></i>Tentang Kami</a></li>
-                        </ul>
-                        <span class="vertical-divider mr-20 ml-20 d-none d-md-inline"></span>
+                        <?php 
+                        $topbarPages = (new \App\Models\Page())->getTopbarPages();
+                        if (!empty($topbarPages)): 
+                        ?>
+                            <ul class="list-inline nav-topbar d-none d-md-inline">
+                                <?php foreach ($topbarPages as $tp): ?>
+                                    <li class="list-inline-item"><a href="<?= BASE_URL ?>/page/<?= \App\Core\Request::escape($tp['slug']) ?>"><i class="elegant-icon icon_document_alt mr-5"></i><?= \App\Core\Request::escape($tp['title']) ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <span class="vertical-divider mr-20 ml-20 d-none d-md-inline"></span>
+                        <?php endif; ?>
                         <button class="search-icon d-none d-md-inline" aria-label="Buka form pencarian"><span class="mr-15 text-muted font-small"><i class="elegant-icon icon_search mr-5"></i>Pencarian</span></button>
                         <div class="dark-light-mode-cover">
                             <a class="dark-light-mode" href="#" aria-label="Ganti mode gelap/terang"></a>

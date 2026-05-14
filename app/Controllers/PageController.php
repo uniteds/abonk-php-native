@@ -50,22 +50,15 @@ class PageController extends Controller {
                     $error = "Judul dan Konten Halaman wajib diisi!";
                 } else {
                     $slug = $this->generateSlug($title);
+                    $showInTopbar = Request::post('add_to_navigation') ? 1 : 0;
                     
                     $this->pageModel->create([
-                        'title'   => $title,
-                        'slug'    => $slug,
-                        'content' => $content,
-                        'status'  => $status
+                        'title'          => $title,
+                        'slug'           => $slug,
+                        'content'        => $content,
+                        'status'         => $status,
+                        'show_in_topbar' => $showInTopbar
                     ]);
-
-                    if (Request::post('add_to_navigation')) {
-                        $menuModel = new \App\Models\NavigationMenu();
-                        $menuModel->create([
-                            'label' => $title,
-                            'url' => '/page/' . $slug,
-                            'order_num' => 0
-                        ]);
-                    }
 
                     Session::setFlash('success', "Halaman statis baru berhasil ditambahkan!");
                     $this->redirect('admin/pages');
@@ -105,37 +98,15 @@ class PageController extends Controller {
                     $error = "Judul dan Konten Halaman wajib diisi!";
                 } else {
                     $slug = ($title === $page['title']) ? $page['slug'] : $this->generateSlug($title, $id);
+                    $showInTopbar = Request::post('add_to_navigation') ? 1 : 0;
                     
                     $this->pageModel->update($id, [
-                        'title'   => $title,
-                        'slug'    => $slug,
-                        'content' => $content,
-                        'status'  => $status
+                        'title'          => $title,
+                        'slug'           => $slug,
+                        'content'        => $content,
+                        'status'         => $status,
+                        'show_in_topbar' => $showInTopbar
                     ]);
-
-                    $menuModel = new \App\Models\NavigationMenu();
-                    $db = \App\Core\Database::getInstance();
-                    $existingMenu = $db->query("SELECT * FROM navigation_menus WHERE url = :url LIMIT 1", ['url' => '/page/' . $page['slug']])->fetch();
-
-                    if (Request::post('add_to_navigation')) {
-                        if (!$existingMenu) {
-                            $menuModel->create([
-                                'label' => $title,
-                                'url' => '/page/' . $slug,
-                                'order_num' => 0
-                            ]);
-                        } else {
-                            $menuModel->update($existingMenu['id'], [
-                                'label' => $title,
-                                'url' => '/page/' . $slug,
-                                'order_num' => $existingMenu['order_num']
-                            ]);
-                        }
-                    } else {
-                        if ($existingMenu) {
-                            $menuModel->delete($existingMenu['id']);
-                        }
-                    }
 
                     Session::setFlash('success', "Halaman statis berhasil diperbarui!");
                     $this->redirect('admin/pages');

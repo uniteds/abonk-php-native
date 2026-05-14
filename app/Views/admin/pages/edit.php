@@ -39,12 +39,9 @@ require_once __DIR__ . '/../../layouts/admin_header.php';
             </select>
         </div>
 
-        <?php 
-        $isInMenu = \App\Core\Database::getInstance()->query("SELECT COUNT(*) FROM navigation_menus WHERE url = :url", ['url' => '/page/' . $page['slug']])->fetchColumn() > 0;
-        ?>
         <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 15px;">
-            <input type="checkbox" name="add_to_navigation" id="add_to_navigation" value="1" <?= $isInMenu ? 'checked' : '' ?> style="width: auto; height: 20px;">
-            <label for="add_to_navigation" style="margin-bottom: 0; font-weight: 600; cursor: pointer;">Tampilkan di Menu Navigasi Utama</label>
+            <input type="checkbox" name="add_to_navigation" id="add_to_navigation" value="1" <?= ($page['show_in_topbar'] == 1) ? 'checked' : '' ?> style="width: auto; height: 20px;">
+            <label for="add_to_navigation" style="margin-bottom: 0; font-weight: 600; cursor: pointer;">Tampilkan di Bilah Navigasi Atas (Top Bar)</label>
         </div>
 
         <div class="form-group">
