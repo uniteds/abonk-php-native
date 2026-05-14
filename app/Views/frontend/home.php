@@ -66,6 +66,19 @@
                     }
                 }
             }
+            // Jika artikel di database masih kurang dari 6 (misal baru diinstal di production), tambahkan artikel demo/placeholder agar layout premium tetap utuh!
+            $placeholders = [
+                ['id' => 901, 'slug' => '#', 'title' => 'Eksplorasi Fitur Premium Abonk CMS', 'category_name' => 'Inspirasi', 'category_slug' => 'inspirasi', 'image' => '', 'created_at' => date('Y-m-d H:i:s'), 'views_count' => 850],
+                ['id' => 902, 'slug' => '#', 'title' => 'Mengenal Arsitektur MVC pada Native PHP', 'category_name' => 'Teknologi', 'category_slug' => 'teknologi', 'image' => '', 'created_at' => date('Y-m-d H:i:s'), 'views_count' => 920],
+                ['id' => 903, 'slug' => '#', 'title' => 'Panduan Optimasi PageSpeed & Aksesibilitas', 'category_name' => 'Edukasi', 'category_slug' => 'edukasi', 'image' => '', 'created_at' => date('Y-m-d H:i:s'), 'views_count' => 740],
+                ['id' => 904, 'slug' => '#', 'title' => 'Masa Depan Pengembangan Web Tanpa Framework', 'category_name' => 'Digital', 'category_slug' => 'digital', 'image' => '', 'created_at' => date('Y-m-d H:i:s'), 'views_count' => 610],
+                ['id' => 905, 'slug' => '#', 'title' => 'Tips Menulis Konten Menarik di Era Modern', 'category_name' => 'Inspirasi', 'category_slug' => 'inspirasi', 'image' => '', 'created_at' => date('Y-m-d H:i:s'), 'views_count' => 530],
+                ['id' => 906, 'slug' => '#', 'title' => 'Mengamankan Server Web & Database Produksi', 'category_name' => 'Teknologi', 'category_slug' => 'teknologi', 'image' => '', 'created_at' => date('Y-m-d H:i:s'), 'views_count' => 890],
+            ];
+            foreach ($placeholders as $ph) {
+                if (count($allGrid) >= 6) break;
+                $allGrid[] = $ph;
+            }
             $sliderPosts = array_slice($allGrid, 0, 2);
             $cardPosts   = array_slice($allGrid, 2, 4);
             ?>
