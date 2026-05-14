@@ -96,6 +96,7 @@ if (isset($_POST['install'])) {
             `status` ENUM('draft', 'published') DEFAULT 'draft',
             `is_featured` TINYINT(1) DEFAULT 0,
             `tags` VARCHAR(255) DEFAULT NULL,
+            `views_count` INT DEFAULT 0,
             `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,

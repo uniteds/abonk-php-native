@@ -216,6 +216,12 @@ class Post extends Model {
         return $this->db->query($sql, ['id' => $id]);
     }
 
+    // Increment views count
+    public function incrementViews($id) {
+        $sql = "UPDATE posts SET views_count = COALESCE(views_count, 0) + 1 WHERE id = :id";
+        return $this->db->query($sql, ['id' => $id]);
+    }
+
     // Get statistics for Admin Dashboard
     public function getDashboardStats() {
         $stats = [];
@@ -237,6 +243,9 @@ class Post extends Model {
         
         // Count total users
         $stats['total_users'] = $this->db->query("SELECT COUNT(*) FROM users")->fetchColumn();
+
+        // Total views across all posts
+        $stats['total_views'] = $this->db->query("SELECT SUM(views_count) FROM posts")->fetchColumn() ?: 0;
 
         return $stats;
     }

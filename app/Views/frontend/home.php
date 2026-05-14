@@ -102,7 +102,7 @@
                                                 </h3>
                                                 <div class="entry-meta meta-1 font-small text-white mt-10 pr-5 pl-5">
                                                     <span class="post-on"><?= date('d M Y', strtotime($feat['created_at'])) ?></span>
-                                                    <span class="hit-count has-dot"><?= $feat['views_count'] ?? rand(100, 999) ?> Tayangan</span>
+                                                    <span class="hit-count has-dot"><?= number_format($feat['views_count'] ?? 0) ?> Tayangan</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="entry-meta meta-1 float-start font-x-small text-uppercase">
                                         <span class="post-on"><?= date('d M Y', strtotime($card['created_at'])) ?></span>
-                                        <span class="post-by has-dot"><?= $card['views_count'] ?? rand(100, 999) ?> tayangan</span>
+                                        <span class="post-by has-dot"><?= number_format($card['views_count'] ?? 0) ?> tayangan</span>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +184,7 @@
                                                             </div>
                                                             <div class="entry-meta meta-1 float-start font-x-small text-uppercase">
                                                                 <span class="post-on"><?= date('d M Y', strtotime($post['created_at'])) ?></span>
-                                                                <span class="post-by has-dot"><?= $post['views_count'] ?? rand(100, 999) ?> tayangan</span>
+                                                                <span class="post-by has-dot"><?= number_format($post['views_count'] ?? 0) ?> tayangan</span>
                                                             </div>
                                                         </div>
                                                     </div>

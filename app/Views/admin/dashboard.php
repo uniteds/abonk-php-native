@@ -47,6 +47,10 @@ require_once __DIR__ . '/../layouts/admin_header.php';
         <div class="stat-title">Pengguna Terdaftar</div>
         <div class="stat-value"><?= $stats['total_users'] ?></div>
     </div>
+    <div class="stat-card">
+        <div class="stat-title">Total Tayangan</div>
+        <div class="stat-value" style="color: #9c27b0;"><?= number_format($stats['total_views'] ?? 0) ?></div>
+    </div>
 </div>
 
 <!-- Recent Content Table -->

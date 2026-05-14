@@ -34,6 +34,7 @@ try {
     try { $db->exec("ALTER TABLE `users` ADD COLUMN `social_github` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
     try { $db->exec("ALTER TABLE `posts` ADD COLUMN `is_featured` TINYINT(1) DEFAULT 0"); } catch (\Exception $e) {}
     try { $db->exec("ALTER TABLE `posts` ADD COLUMN `tags` VARCHAR(255) DEFAULT NULL"); } catch (\Exception $e) {}
+    try { $db->exec("ALTER TABLE `posts` ADD COLUMN `views_count` INT DEFAULT 0"); } catch (\Exception $e) {}
     try { $db->exec("ALTER TABLE `pages` ADD COLUMN `show_in_topbar` TINYINT(1) DEFAULT 0"); } catch (\Exception $e) {}
 
     // Auto-migration check: Ensure pages table exists

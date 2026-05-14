@@ -102,6 +102,10 @@ class HomeController extends Controller {
             return;
         }
 
+        // Increment views count
+        $this->postModel->incrementViews($post['id']);
+        $post['views_count'] = ($post['views_count'] ?? 0) + 1;
+
         // Sidebar widgets data
         $categories = $this->categoryModel->getAllWithCount();
         $recentPosts = $this->postModel->getRecent(5);

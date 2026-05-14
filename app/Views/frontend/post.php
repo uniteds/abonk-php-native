@@ -19,6 +19,7 @@
                             </p>
                             <span class="mr-10"> <?= date('d M Y', strtotime($post['created_at'])) ?></span>
                             <span class="has-dot"> <?= \App\Core\Request::escape($post['category_name']) ?></span>
+                            <span class="has-dot"> <?= number_format($post['views_count'] ?? 0) ?> Tayangan</span>
                         </div>
                     </div>
                     <div class="col-md-6 text-end d-none d-md-inline">
