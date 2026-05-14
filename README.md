@@ -54,7 +54,7 @@ Pastikan Docker dan Docker Compose telah terinstal di komputer Anda.
 
 1. Kloning repositori ini:
    ```bash
-   git clone https://github.com/username/abonk-cms.local.git
+   git clone https://github.com/uniteds/abonk-php-native.git
    cd abonk-cms
    ```
 2. Jalankan perintah build dan up kontainer:
