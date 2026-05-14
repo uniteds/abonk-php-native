@@ -26,9 +26,10 @@ class Request {
                 $data[$key] = self::sanitize($value);
             }
         } else {
-            // Remove HTML tags and convert special characters
+            // Decode any existing entities first to prevent buildup, then re-encode safely
             $data = trim($data);
-            $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+            $decoded = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
+            $data = htmlspecialchars($decoded, ENT_QUOTES, 'UTF-8');
         }
         return $data;
     }
@@ -56,6 +57,8 @@ class Request {
 
     // Sanitize output for safe display in views (XSS Prevention)
     public static function escape($string) {
-        return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
+        if ($string === null) return '';
+        $decoded = html_entity_decode($string, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars($decoded, ENT_QUOTES, 'UTF-8');
     }
 }

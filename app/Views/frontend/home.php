@@ -1,7 +1,7 @@
 <?php require_once __DIR__ . '/../layouts/frontend_header.php'; ?>
 
-<!-- Hero Section with Custom Theme Pattern -->
-<section class="hero">
+<!-- Hero Section with Custom Theme Pattern or Background Image -->
+<section class="hero" style="<?= !empty($settings['site_hero_image']) ? 'background: linear-gradient(to bottom, rgba(5,31,20,0.85), rgba(5,31,20,0.95)), url(\'' . BASE_URL . '/assets/uploads/' . \App\Core\Request::escape($settings['site_hero_image']) . '\') center/cover no-repeat;' : '' ?>">
     <div class="hero-pattern"></div>
     <div class="hero-content">
         <h1><?= \App\Core\Request::escape($settings['site_hero_title'] ?? 'Eksplorasi Ide Tanpa Batas') ?></h1>

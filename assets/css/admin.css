@@ -122,39 +122,40 @@ aside {
 
 .user-badge {
     margin-top: auto;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: #ffffff;
     border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 15px;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(5, 31, 20, 0.04);
     display: flex;
     flex-direction: column;
-    gap: 4px;
 }
 
-.user-badge .username {
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--color-dark);
-}
-
-.user-badge .role {
-    font-size: 11px;
-    color: var(--color-accent);
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.user-badge .logout-link {
-    color: #ff5555;
+.badge-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: rgba(5, 31, 20, 0.75);
     text-decoration: none;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
-    margin-top: 10px;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
-.user-badge .logout-link:hover {
-    color: #ff3333;
+.badge-link:hover {
+    background-color: rgba(0, 168, 107, 0.08);
+    color: var(--color-accent);
+}
+
+.badge-link.logout {
+    color: #e03b3b;
+}
+
+.badge-link.logout:hover {
+    background-color: rgba(224, 59, 59, 0.08);
+    color: #c92a2a;
 }
 
 /* ---------------------------------------------------- */

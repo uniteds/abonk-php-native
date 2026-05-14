@@ -11,7 +11,7 @@ class Post extends Model {
 
     // Find post by ID with category and author details
     public function findById($id) {
-        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name 
+        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name, u.profile_photo as author_photo, u.name as author_full_name, u.bio as author_bio 
                 FROM posts p
                 JOIN categories c ON p.category_id = c.id
                 JOIN users u ON p.user_id = u.id
@@ -21,7 +21,7 @@ class Post extends Model {
 
     // Find post by slug
     public function findBySlug($slug) {
-        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name 
+        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name, u.profile_photo as author_photo, u.name as author_full_name, u.bio as author_bio 
                 FROM posts p
                 JOIN categories c ON p.category_id = c.id
                 JOIN users u ON p.user_id = u.id
@@ -31,7 +31,7 @@ class Post extends Model {
 
     // Get all posts for admin (regardless of status, with category & user names)
     public function getAllForAdmin() {
-        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name 
+        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name, u.profile_photo as author_photo, u.name as author_full_name, u.bio as author_bio 
                 FROM posts p
                 JOIN categories c ON p.category_id = c.id
                 JOIN users u ON p.user_id = u.id
@@ -41,7 +41,7 @@ class Post extends Model {
 
     // Get published posts with options (search, category, pagination)
     public function getPublished($limit = 6, $offset = 0, $search = '', $categoryId = null) {
-        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name 
+        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug, u.username as author_name, u.profile_photo as author_photo, u.name as author_full_name, u.bio as author_bio 
                 FROM posts p
                 JOIN categories c ON p.category_id = c.id
                 JOIN users u ON p.user_id = u.id
@@ -175,9 +175,25 @@ class Post extends Model {
         // Count total categories
         $stats['total_categories'] = $this->db->query("SELECT COUNT(*) FROM categories")->fetchColumn();
         
+        // Count total static pages
+        $stats['total_pages'] = $this->db->query("SELECT COUNT(*) FROM pages")->fetchColumn();
+        
         // Count total users
         $stats['total_users'] = $this->db->query("SELECT COUNT(*) FROM users")->fetchColumn();
 
         return $stats;
+    }
+
+    // Get recent posts for Admin Dashboard preview
+    public function getRecentForAdmin($limit = 5) {
+        $sql = "SELECT p.*, c.name as category_name, u.username as author_name 
+                FROM posts p
+                JOIN categories c ON p.category_id = c.id
+                JOIN users u ON p.user_id = u.id
+                ORDER BY p.id DESC LIMIT :limit";
+        $stmt = $this->db->getConnection()->prepare($sql);
+        $stmt->bindValue('limit', (int) $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

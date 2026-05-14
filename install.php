@@ -36,6 +36,14 @@ if (isset($_POST['install'])) {
             `username` VARCHAR(50) NOT NULL UNIQUE,
             `email` VARCHAR(100) NOT NULL UNIQUE,
             `password` VARCHAR(255) NOT NULL,
+            `name` VARCHAR(100) DEFAULT NULL,
+            `profile_photo` VARCHAR(255) DEFAULT NULL,
+            `bio` TEXT DEFAULT NULL,
+            `social_facebook` VARCHAR(255) DEFAULT NULL,
+            `social_twitter` VARCHAR(255) DEFAULT NULL,
+            `social_instagram` VARCHAR(255) DEFAULT NULL,
+            `social_linkedin` VARCHAR(255) DEFAULT NULL,
+            `social_github` VARCHAR(255) DEFAULT NULL,
             `role` ENUM('admin', 'editor') DEFAULT 'editor',
             `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -64,6 +72,17 @@ if (isset($_POST['install'])) {
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
             FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE RESTRICT
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+        // 5b. Create Pages Table
+        $pdo->exec("CREATE TABLE IF NOT EXISTS `pages` (
+            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `title` VARCHAR(255) NOT NULL,
+            `slug` VARCHAR(255) NOT NULL UNIQUE,
+            `content` TEXT NOT NULL,
+            `status` ENUM('draft', 'published') DEFAULT 'draft',
+            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
         // 6. Create Settings Table

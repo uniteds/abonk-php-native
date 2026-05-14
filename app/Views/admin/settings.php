@@ -7,7 +7,7 @@ require_once __DIR__ . '/../layouts/admin_header.php';
 <div class="admin-header">
     <div>
         <h1>Pengaturan Situs Global</h1>
-        <p>Sesuaikan identitas, metadata SEO, dan konten bagian depan website Anda.</p>
+        <p>Sesuaikan identitas, metadata SEO, logo, dan gambar latar banner beranda website Anda.</p>
     </div>
 </div>
 
@@ -18,11 +18,11 @@ require_once __DIR__ . '/../layouts/admin_header.php';
 <?php endif; ?>
 
 <div class="form-card">
-    <form action="<?= BASE_URL ?>/admin/settings" method="POST">
+    <form action="<?= BASE_URL ?>/admin/settings" method="POST" enctype="multipart/form-data">
         <!-- CSRF Protection -->
         <input type="hidden" name="csrf_token" value="<?= $csrfToken ?>">
 
-        <h3 style="font-size: 16px; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;">Identitas Situs (SEO)</h3>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;">Identitas & Visual Situs (SEO & Logo)</h3>
 
         <div class="form-group">
             <label for="site_name">Nama Situs Web (Site Name)</label>
@@ -31,12 +31,23 @@ require_once __DIR__ . '/../layouts/admin_header.php';
         </div>
 
         <div class="form-group">
+            <label for="site_logo">Logo Utama Situs (Opsional)</label>
+            <?php if (!empty($settings['site_logo'])): ?>
+                <div style="margin-bottom: 12px; max-width: 200px; padding: 12px; background: rgba(5,31,20,0.03); border: 1px solid var(--color-border); border-radius: 8px;">
+                    <img src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($settings['site_logo']) ?>" alt="Logo" style="max-width: 100%; height: auto; display: block;">
+                </div>
+            <?php endif; ?>
+            <input type="file" name="site_logo" id="site_logo" class="form-control" accept="image/jpeg,image/png,image/webp">
+            <p class="form-text">Format JPG/PNG/WEBP maks 2MB. Jika tidak mengunggah logo, sistem otomatis menampilkan teks nama situs seperti biasa.</p>
+        </div>
+
+        <div class="form-group">
             <label for="site_desc">Deskripsi SEO Situs Web (Meta Description)</label>
             <textarea name="site_desc" id="site_desc" class="form-control" required style="min-height: 80px;"><?= \App\Core\Request::escape($settings['site_desc'] ?? 'Platform Konten Premium Anda.') ?></textarea>
             <p class="form-text">Deskripsi penjelas ringkas situs web Anda yang digunakan oleh mesin pencari seperti Google untuk pratinjau hasil pencarian.</p>
         </div>
 
-        <h3 style="font-size: 16px; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;">Konten Banner Beranda (Hero Section)</h3>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;">Konten & Latar Banner Beranda (Hero Section)</h3>
 
         <div class="form-group">
             <label for="site_hero_title">Judul Utama Banner (Hero Title)</label>
@@ -48,6 +59,17 @@ require_once __DIR__ . '/../layouts/admin_header.php';
             <label for="site_hero_desc">Sub-Judul Deskripsi Banner (Hero Subtitle)</label>
             <textarea name="site_hero_desc" id="site_hero_desc" class="form-control" required style="min-height: 100px;"><?= \App\Core\Request::escape($settings['site_hero_desc'] ?? '') ?></textarea>
             <p class="form-text">Penjelasan detail di bawah judul besar banner untuk menarik perhatian pembaca.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="site_hero_image">Gambar Latar Belakang Banner (Hero Background Image)</label>
+            <?php if (!empty($settings['site_hero_image'])): ?>
+                <div style="margin-bottom: 12px; max-width: 350px; padding: 12px; background: rgba(5,31,20,0.03); border: 1px solid var(--color-border); border-radius: 8px;">
+                    <img src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($settings['site_hero_image']) ?>" alt="Hero Background" style="max-width: 100%; height: auto; border-radius: 6px; display: block;">
+                </div>
+            <?php endif; ?>
+            <input type="file" name="site_hero_image" id="site_hero_image" class="form-control" accept="image/jpeg,image/png,image/webp">
+            <p class="form-text">Gambar latar belakang beresolusi tinggi untuk bagian atas halaman beranda. Format JPG/PNG/WEBP maks 2MB.</p>
         </div>
 
         <div class="form-actions" style="margin-top: 40px;">

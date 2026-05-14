@@ -72,6 +72,37 @@ class User extends Model {
         return $this->db->query($sql, $params);
     }
 
+    // Update user profile details
+    public function updateProfile($id, $data) {
+        $params = [
+            'id'               => $id,
+            'username'         => $data['username'],
+            'email'            => $data['email'],
+            'name'             => $data['name'],
+            'bio'              => $data['bio'],
+            'social_facebook'  => $data['social_facebook'],
+            'social_twitter'   => $data['social_twitter'],
+            'social_instagram' => $data['social_instagram'],
+            'social_linkedin'  => $data['social_linkedin'],
+            'social_github'    => $data['social_github']
+        ];
+
+        $setClause = "username = :username, email = :email, name = :name, bio = :bio, social_facebook = :social_facebook, social_twitter = :social_twitter, social_instagram = :social_instagram, social_linkedin = :social_linkedin, social_github = :social_github";
+
+        if (!empty($data['password'])) {
+            $setClause .= ", password = :password";
+            $params['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+        }
+
+        if (array_key_exists('profile_photo', $data) && $data['profile_photo'] !== null) {
+            $setClause .= ", profile_photo = :profile_photo";
+            $params['profile_photo'] = $data['profile_photo'];
+        }
+
+        $sql = "UPDATE users SET {$setClause} WHERE id = :id";
+        return $this->db->query($sql, $params);
+    }
+
     // Delete a user
     public function delete($id) {
         $sql = "DELETE FROM users WHERE id = :id";

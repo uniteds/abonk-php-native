@@ -221,7 +221,7 @@ class PostController extends Controller {
         return $slug;
     }
 
-    // Secure image uploader helper
+    // Secure image uploader helper with Auto-Convert to WebP
     private function uploadImage($file) {
         // Create directory if it doesn't exist
         if (!is_dir(UPLOAD_DIR)) {
@@ -240,11 +240,39 @@ class PostController extends Controller {
 
         // Validate extension, mime type, and file size (< 2MB)
         if (in_array($ext, $allowedExtensions) && in_array($mime, $allowedMimes) && $fileSize <= 2 * 1024 * 1024) {
-            $secureName = uniqid('post_') . '.' . $ext;
+            $secureName = uniqid('post_') . '.webp';
             $destPath = UPLOAD_DIR . '/' . $secureName;
             
-            if (move_uploaded_file($fileTmp, $destPath)) {
-                return $secureName;
+            // Auto convert to WebP using GD library for maximum performance
+            if (function_exists('imagewebp')) {
+                $img = null;
+                if ($mime === 'image/jpeg') {
+                    $img = @imagecreatefromjpeg($fileTmp);
+                } elseif ($mime === 'image/png') {
+                    $img = @imagecreatefrompng($fileTmp);
+                    if ($img) {
+                        imagepalettetotruecolor($img);
+                        imagealphablending($img, true);
+                        imagesavealpha($img, true);
+                    }
+                } elseif ($mime === 'image/webp') {
+                    $img = @imagecreatefromwebp($fileTmp);
+                }
+
+                if ($img) {
+                    $success = imagewebp($img, $destPath, 85);
+                    imagedestroy($img);
+                    if ($success) {
+                        return $secureName;
+                    }
+                }
+            }
+
+            // Fallback to standard move_uploaded_file if GD/imagewebp fails
+            $secureNameFallback = uniqid('post_') . '.' . $ext;
+            $destPathFallback = UPLOAD_DIR . '/' . $secureNameFallback;
+            if (move_uploaded_file($fileTmp, $destPathFallback)) {
+                return $secureNameFallback;
             }
         }
 

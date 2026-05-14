@@ -12,13 +12,20 @@
                 </a>
                 <h1 class="article-title"><?= \App\Core\Request::escape($post['title']) ?></h1>
                 
-                <div class="article-meta">
+                <div class="article-meta" style="display: flex; align-items: center; gap: 16px; margin-top: 15px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--color-accent); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; overflow: hidden; box-shadow: 0 2px 5px rgba(0, 168, 107, 0.2);">
+                            <?php if (!empty($post['author_photo'])): ?>
+                                <img src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($post['author_photo']) ?>" alt="Foto Penulis" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php else: ?>
+                                <?= strtoupper(substr($post['author_name'], 0, 1)) ?>
+                            <?php endif; ?>
+                        </div>
+                        <span>Penulis: <strong><?= \App\Core\Request::escape($post['author_full_name'] ?: $post['author_name']) ?></strong></span>
+                    </div>
+                    <span style="color: rgba(18,18,18,0.3);">|</span>
                     <span>
-                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        Penulis: <strong><?= \App\Core\Request::escape($post['author_name']) ?></strong>
-                    </span>
-                    <span>
-                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-right: 4px; vertical-align: middle;"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         Dipublikasikan: <strong><?= date('d M Y', strtotime($post['created_at'])) ?></strong>
                     </span>
                 </div>
@@ -31,6 +38,25 @@
             <!-- Article Body Content (Unescaped as it supports rich content/HTML formatting from Admin) -->
             <div class="article-body">
                 <?= $post['content'] ?>
+            </div>
+
+            <!-- Author Profile Box -->
+            <div class="author-box" style="margin-top: 50px; padding: 30px; background-color: var(--color-cream); border: 1px solid rgba(0, 168, 107, 0.15); border-radius: 16px; display: flex; gap: 20px; align-items: center;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--color-accent); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 28px; flex-shrink: 0; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 168, 107, 0.2); border: 2px solid white;">
+                    <?php if (!empty($post['author_photo'])): ?>
+                        <img src="<?= BASE_URL ?>/assets/uploads/<?= \App\Core\Request::escape($post['author_photo']) ?>" alt="Foto Penulis" style="width: 100%; height: 100%; object-fit: cover;">
+                    <?php else: ?>
+                        <?= strtoupper(substr($post['author_name'], 0, 1)) ?>
+                    <?php endif; ?>
+                </div>
+                <div>
+                    <h3 style="font-size: 18px; font-weight: 800; color: var(--color-dark); margin-bottom: 4px;">
+                        <?= \App\Core\Request::escape($post['author_full_name'] ?: $post['author_name']) ?>
+                    </h3>
+                    <p style="font-size: 14px; color: rgba(18,18,18,0.75); line-height: 1.6; margin-bottom: 0;">
+                        <?= !empty($post['author_bio']) ? nl2br(\App\Core\Request::escape($post['author_bio'])) : 'Penulis reguler di Abonk CMS yang gemar berbagi wawasan dan informasi menarik.' ?>
+                    </p>
+                </div>
             </div>
 
             <div style="margin-top: 50px; padding-top: 25px; border-top: 1px solid rgba(18,18,18,0.05);">
