@@ -22,7 +22,7 @@ db_data/
 mysql/
 
 # Composer dependencies (if used in future)
-vendor/
+/vendor/
 
 # User uploaded media (optional: uncomment if you don't want sample uploads in git)
 # assets/uploads/*
