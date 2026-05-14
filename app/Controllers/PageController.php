@@ -58,6 +58,15 @@ class PageController extends Controller {
                         'status'  => $status
                     ]);
 
+                    if (Request::post('add_to_navigation')) {
+                        $menuModel = new \App\Models\NavigationMenu();
+                        $menuModel->create([
+                            'label' => $title,
+                            'url' => '/page/' . $slug,
+                            'order_num' => 0
+                        ]);
+                    }
+
                     Session::setFlash('success', "Halaman statis baru berhasil ditambahkan!");
                     $this->redirect('admin/pages');
                 }
@@ -103,6 +112,30 @@ class PageController extends Controller {
                         'content' => $content,
                         'status'  => $status
                     ]);
+
+                    $menuModel = new \App\Models\NavigationMenu();
+                    $db = \App\Core\Database::getInstance();
+                    $existingMenu = $db->query("SELECT * FROM navigation_menus WHERE url = :url LIMIT 1", ['url' => '/page/' . $page['slug']])->fetch();
+
+                    if (Request::post('add_to_navigation')) {
+                        if (!$existingMenu) {
+                            $menuModel->create([
+                                'label' => $title,
+                                'url' => '/page/' . $slug,
+                                'order_num' => 0
+                            ]);
+                        } else {
+                            $menuModel->update($existingMenu['id'], [
+                                'label' => $title,
+                                'url' => '/page/' . $slug,
+                                'order_num' => $existingMenu['order_num']
+                            ]);
+                        }
+                    } else {
+                        if ($existingMenu) {
+                            $menuModel->delete($existingMenu['id']);
+                        }
+                    }
 
                     Session::setFlash('success', "Halaman statis berhasil diperbarui!");
                     $this->redirect('admin/pages');

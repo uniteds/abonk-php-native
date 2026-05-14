@@ -180,6 +180,11 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                                     <li><a href="<?= BASE_URL ?>/category/<?= \App\Core\Request::escape($cat['slug']) ?>"><?= \App\Core\Request::escape($cat['name']) ?></a></li>
                                 <?php endforeach; ?>
                             <?php endif; ?>
+                            <?php if (!empty($menus)): ?>
+                                <?php foreach ($menus as $m): ?>
+                                    <li><a href="<?= strpos($m['url'], 'http') === 0 ? \App\Core\Request::escape($m['url']) : BASE_URL . \App\Core\Request::escape($m['url']) ?>"><?= \App\Core\Request::escape($m['label']) ?></a></li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </ul>
                         <!--Mobile menu-->
                         <ul id="mobile-menu" class="d-block d-lg-none text-muted">
@@ -187,6 +192,11 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
                             <?php if (!empty($categories)): ?>
                                 <?php foreach ($categories as $cat): ?>
                                     <li><a href="<?= BASE_URL ?>/category/<?= \App\Core\Request::escape($cat['slug']) ?>"><?= \App\Core\Request::escape($cat['name']) ?></a></li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php if (!empty($menus)): ?>
+                                <?php foreach ($menus as $m): ?>
+                                    <li><a href="<?= strpos($m['url'], 'http') === 0 ? \App\Core\Request::escape($m['url']) : BASE_URL . \App\Core\Request::escape($m['url']) ?>"><?= \App\Core\Request::escape($m['label']) ?></a></li>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </ul>

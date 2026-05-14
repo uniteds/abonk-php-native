@@ -39,6 +39,14 @@ require_once __DIR__ . '/../../layouts/admin_header.php';
             </select>
         </div>
 
+        <?php 
+        $isInMenu = \App\Core\Database::getInstance()->query("SELECT COUNT(*) FROM navigation_menus WHERE url = :url", ['url' => '/page/' . $page['slug']])->fetchColumn() > 0;
+        ?>
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 15px;">
+            <input type="checkbox" name="add_to_navigation" id="add_to_navigation" value="1" <?= $isInMenu ? 'checked' : '' ?> style="width: auto; height: 20px;">
+            <label for="add_to_navigation" style="margin-bottom: 0; font-weight: 600; cursor: pointer;">Tampilkan di Menu Navigasi Utama</label>
+        </div>
+
         <div class="form-group">
             <label for="content">Isi Halaman</label>
             <textarea name="content" id="content" class="form-control editor-textarea" placeholder="Tuliskan isi halaman statis Anda di sini..."><?= \App\Core\Request::escape($page['content']) ?></textarea>

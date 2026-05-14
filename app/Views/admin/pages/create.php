@@ -39,6 +39,11 @@ require_once __DIR__ . '/../../layouts/admin_header.php';
             </select>
         </div>
 
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 15px;">
+            <input type="checkbox" name="add_to_navigation" id="add_to_navigation" value="1" <?= (isset($_POST['add_to_navigation']) && $_POST['add_to_navigation'] == 1) ? 'checked' : '' ?> style="width: auto; height: 20px;">
+            <label for="add_to_navigation" style="margin-bottom: 0; font-weight: 600; cursor: pointer;">Tampilkan di Menu Navigasi Utama</label>
+        </div>
+
         <div class="form-group">
             <label for="content">Isi Halaman</label>
             <textarea name="content" id="content" class="form-control editor-textarea" placeholder="Tuliskan isi halaman statis Anda di sini..."><?= isset($_POST['content']) ? \App\Core\Request::escape($_POST['content']) : '' ?></textarea>
