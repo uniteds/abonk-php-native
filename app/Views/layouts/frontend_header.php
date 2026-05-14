@@ -33,7 +33,25 @@ $canonUrl = isset($canonicalUrl) ? \App\Core\Request::escape($canonicalUrl) : BA
 
     <link rel="shortcut icon" type="image/webp" href="<?= BASE_URL ?>/assets/imgs/theme/favicon.webp">
 
-    <!-- Stories Premium CSS -->
+    <!-- Preconnect Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+
+    <!-- Vendor CSS Critical (Direct Load) -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/elegant-icons.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/slick.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/slicknav.css">
+
+    <!-- Vendor CSS Non-Critical / Animations (Deferred Load for PageSpeed 100/100) -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/animate.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/owl.carousel.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/ticker-style.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/nice-select.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/vendor/perfect-scrollbar.css" media="print" onload="this.media='all'">
+
+    <!-- Stories Premium Main CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/widgets.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/dark.css">

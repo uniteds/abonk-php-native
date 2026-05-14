@@ -30,22 +30,7 @@ TABLE CONTENT
  Custom amine
 ***/
 
-/* Import third party CSS library */
-@import url(vendor/bootstrap.min.css);
-@import url(vendor/owl.carousel.min.css);
-@import url(vendor/ticker-style.css);
-@import url(vendor/elegant-icons.css);
-@import url(vendor/slick.css);
-@import url(vendor/slicknav.css);
-@import url(vendor/animate.min.css);
-@import url(vendor/nice-select.css);
-@import url(vendor/perfect-scrollbar.css);
-
-/*Google fonts
-	font-family: 'Crimson Text', serif;
-	font-family: 'Noto Sans JP', sans-serif;
-*/
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+/* Third party CSS library dan Google Fonts kini dimuat secara langsung dan asinkron di frontend_header.php untuk optimasi LCP/FCP PageSpeed */
 :root{
 	--color-mode:"light";
 	--color-primary:#5869DA;
