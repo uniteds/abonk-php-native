@@ -59,11 +59,13 @@ class AdminController extends Controller {
                 $error = "Kesalahan Validasi CSRF. Silakan coba lagi.";
             } else {
                 $settingsData = [
-                    'site_name'       => Request::post('site_name'),
-                    'site_desc'       => Request::post('site_desc'),
-                    'site_hero_title' => Request::post('site_hero_title'),
-                    'site_hero_desc'  => Request::post('site_hero_desc'),
-                    'sponsor_url'     => Request::post('sponsor_url'),
+                    'site_name'            => Request::post('site_name'),
+                    'site_desc'            => Request::post('site_desc'),
+                    'site_hero_title'      => Request::post('site_hero_title'),
+                    'site_hero_desc'       => Request::post('site_hero_desc'),
+                    'sponsor_url'          => Request::post('sponsor_url'),
+                    'turnstile_site_key'   => Request::post('turnstile_site_key'),
+                    'turnstile_secret_key' => Request::post('turnstile_secret_key'),
                 ];
 
                 if (empty($settingsData['site_name']) || empty($settingsData['site_desc'])) {

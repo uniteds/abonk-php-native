@@ -91,6 +91,20 @@ require_once __DIR__ . '/../layouts/admin_header.php';
             <p class="form-text">Gambar banner iklan untuk diletakkan di sidebar. Format JPG/PNG/WEBP maks 2MB.</p>
         </div>
 
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;">Pencegahan Bruteforce & Keamanan Login (Cloudflare Turnstile)</h3>
+
+        <div class="form-group">
+            <label for="turnstile_site_key">Site Key (Kunci Situs)</label>
+            <input type="text" name="turnstile_site_key" id="turnstile_site_key" class="form-control" placeholder="1x00000000000000000000AA" value="<?= \App\Core\Request::escape($settings['turnstile_site_key'] ?? '1x00000000000000000000AA') ?>">
+            <p class="form-text">Dapatkan dari dasbor Cloudflare Turnstile. Secara bawaan menggunakan kunci pengujian Cloudflare.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="turnstile_secret_key">Secret Key (Kunci Rahasia)</label>
+            <input type="password" name="turnstile_secret_key" id="turnstile_secret_key" class="form-control" placeholder="1x0000000000000000000000000000000AA" value="<?= \App\Core\Request::escape($settings['turnstile_secret_key'] ?? '1x0000000000000000000000000000000AA') ?>">
+            <p class="form-text">Kunci rahasia untuk memverifikasi keabsahan captcha di sisi server web.</p>
+        </div>
+
         <div class="form-actions" style="margin-top: 40px;">
             <button type="submit" class="btn">Simpan Semua Pengaturan</button>
             <a href="<?= BASE_URL ?>/admin" class="btn btn-secondary">Batalkan</a>
